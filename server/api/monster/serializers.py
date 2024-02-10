@@ -5,13 +5,13 @@ from .models import Monster, MonsterAttack, MonsterImage
 class MonsterAttackSerializer(serializers.ModelSerializer):
     class Meta:
         model = MonsterAttack
-        fields = "__all__"
+        fields = ["name", "damage", "num_of_attack", "description"]
 
 
 class MonsterImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = MonsterImage
-        fields = "__all__"
+        fields = ["url", "image_type", "description"]
 
 
 class MonsterSerializer(serializers.ModelSerializer):
