@@ -5,13 +5,13 @@ from .models import Monster, MonsterAttack, MonsterImage
 class MonsterAttackSerializer(serializers.ModelSerializer):
     class Meta:
         model = MonsterAttack
-        fields = ["name", "damage", "num_of_attack", "description"]
+        fields = ["name", "damage", "num_of_attack"]
 
 
 class MonsterImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = MonsterImage
-        fields = ["url", "image_type", "description"]
+        fields = ["url", "image_type"]
 
 
 class MonsterSerializer(serializers.ModelSerializer):
@@ -26,7 +26,6 @@ class MonsterSerializer(serializers.ModelSerializer):
             "level",
             "health",
             "attack",
-            "description",
             "created_at",
             "updated_at",
             "attacks",
@@ -51,7 +50,7 @@ class MonsterSerializer(serializers.ModelSerializer):
         instance.level = validated_data.get("level", instance.level)
         instance.health = validated_data.get("health", instance.health)
         instance.attack = validated_data.get("attack", instance.attack)
-        instance.description = validated_data.get("description", instance.description)
+        # instance.description = validated_data.get("description", instance.description)
         instance.save()
 
         # For simplicity, this example does not handle updating or deleting existing attacks/images.
