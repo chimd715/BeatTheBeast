@@ -1,5 +1,5 @@
 from django.db import models
-from enum import Enum
+from .schemas import MonsterImageType
 
 
 # Create your models here.
@@ -18,17 +18,10 @@ class MonsterAttack(models.Model):
     monster = models.ForeignKey(
         Monster, related_name="attacks", on_delete=models.CASCADE
     )
-    monster_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     damage = models.IntegerField()
     num_of_attack = models.IntegerField()
     description = models.TextField()
-
-
-class MonsterImageType(Enum):
-    NORMAL = "normal"
-    RAGE = "rage"
-    ATTACK = "attack"
-    HIT = "hit"
 
 
 class MonsterImage(models.Model):
