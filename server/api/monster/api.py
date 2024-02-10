@@ -9,7 +9,9 @@ router = Router()
 
 @router.get("/")
 def list_monsters(request):
-    monsters = Monster.objects.all().prefetch_related("attacks", "images")
+    monsters = (
+        Monster.objects.all().prefetch_related("attacks", "images").order_by("id")
+    )
     return MonsterSerializer(monsters, many=True).data
 
 

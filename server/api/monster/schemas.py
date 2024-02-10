@@ -14,13 +14,13 @@ class MonsterAttackSchema(BaseModel):
     name: str
     damage: int
     num_of_attack: int
-    description: str
+    # description: str
 
 
 class MonsterImageSchema(BaseModel):
     url: str
     image_type: MonsterImageType
-    description: str
+    # description: str
 
 
 class MonsterSchema(BaseModel):
@@ -28,6 +28,6 @@ class MonsterSchema(BaseModel):
     level: int
     health: int
     attack: int
-    description: str
+    # description: str
     attacks: Optional[List[MonsterAttackSchema]] = None
     images: Optional[List[MonsterImageSchema]] = None
