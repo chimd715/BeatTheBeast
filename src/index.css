@@ -12,6 +12,11 @@ code {
     monospace;
 }
 
+body {
+  height: 100vh;
+  padding: 10px;
+}
+
 .main-container {
   display: grid;
   grid-template-columns: 1fr 1fr;

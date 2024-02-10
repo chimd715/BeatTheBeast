@@ -1,15 +1,17 @@
 import React, { useState, useCallback } from 'react';
 import './index.css';
 
-const Monster = ({ level, name, strength, health }) => {
+const Monster = ({ selectedMonster }) => {
+  const { level = 3, name = 'puppy', strength = 100 } = selectedMonster;
   return (
-    <div className="zz">
-      <image />
+    <div className="monster-container">
+      <div className="img-container">
+        <img src={`img/${name}/${level}.jpeg`} alt="괴물" />
+      </div>
       <div className="info">
-        <p>name: {name}</p>
-        <p>Level: {level}</p>
-        <p>Strength: {strength}</p>
-        <p>health: {health}</p>
+        <p className="name">{name}</p>
+        <p>Lv {level}</p>
+        <p>공격력 {strength}</p>
       </div>
     </div>
   );
