@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-const HealthBar = ({ health, initialHealth }) => {
+const HealthBar = ({ health, initialHealth, setMonsterState }) => {
   const remainHealth = (health / initialHealth) * 100;
   const displayHealth = health < 0 ? 0 : Math.floor(health);
   const barStyle = {
@@ -15,6 +15,7 @@ const HealthBar = ({ health, initialHealth }) => {
       case remainHealth >= 30 && remainHealth < 70:
         return 'yellow';
       case remainHealth < 30:
+        setMonsterState('rage');
         return 'red';
     }
   }, [remainHealth]);

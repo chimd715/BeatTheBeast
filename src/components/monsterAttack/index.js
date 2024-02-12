@@ -1,11 +1,10 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import './index.css';
 
-const MonsterAttack = ({ setMonster }) => {
+const MonsterAttack = ({ setMonster, setMonsterState }) => {
   const inputRef = useRef();
-
   const handleSubmit = () => {
-    console.log(inputRef.current.value);
+    setMonsterState('hit');
     setMonster((prev) => {
       return { ...prev, health: prev.health - inputRef.current.value };
     });

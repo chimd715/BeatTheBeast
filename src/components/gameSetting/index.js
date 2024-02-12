@@ -2,7 +2,13 @@ import React, { useRef, useState } from 'react';
 import Hobodang from './Hobodang';
 import Monster from './Monster';
 import './index.css';
-const GameSetting = ({ setPlayer, player = 6, setCurrentMonster }) => {
+const GameSetting = ({
+  setPlayer,
+  player = 6,
+  setSelectedMonster,
+  setInitialMonsterHealth,
+  setMonsterState,
+}) => {
   const [visible, setVisible] = useState(false);
   const [tab, setTab] = useState('player');
   return (
@@ -14,7 +20,8 @@ const GameSetting = ({ setPlayer, player = 6, setCurrentMonster }) => {
         <div className="modal">
           <div className="modal-content">
             <div className="modal-close" onClick={() => setVisible(false)}>
-              <img src="img/setting.png" alt="설정" />
+              {/* <img src="img/setting.png" alt="설정" /> */}
+              닫기
             </div>
             <p className="content-main-noti">
               수정된 데이터는 즉시 반영됩니다.
@@ -29,7 +36,11 @@ const GameSetting = ({ setPlayer, player = 6, setCurrentMonster }) => {
                   <Hobodang setPlayer={setPlayer} player={player} />
                 )}
                 {tab === 'monster' && (
-                  <Monster setCurrentMonster={setCurrentMonster} />
+                  <Monster
+                    setSelectedMonster={setSelectedMonster}
+                    setInitialMonsterHealth={setInitialMonsterHealth}
+                    setMonsterState={setMonsterState}
+                  />
                 )}
               </div>
             </div>
