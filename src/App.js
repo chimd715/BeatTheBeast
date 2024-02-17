@@ -32,16 +32,7 @@ const App = () => {
             setMonsterState={setMonsterState}
           />
         ) : (
-          <div className="intro">
-            '몬스터를 세팅해주세요.'
-            <GameSetting
-              player={player}
-              setPlayer={setPlayer}
-              setSelectedMonster={setSelectedMonster}
-              setInitialMonsterHealth={setInitialMonsterHealth}
-              setMonsterState={setMonsterState}
-            />
-          </div>
+          <div className="intro">'몬스터를 세팅해주세요.'</div>
         )}
         <GameSetting
           player={player}

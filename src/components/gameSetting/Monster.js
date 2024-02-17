@@ -19,7 +19,7 @@ const Monster = ({
 }) => {
   const [updateMode, setUpdateMode] = useState('change');
   const [monsterList, setMonsterList] = useState([]);
-  const [fetchMonster, setFetchMonster] = useState({});
+  const [patchMonster, setpatchMonster] = useState({});
   const [attackFields, setAttackFields] = useState([]);
   const [isAttackEditModeById, setIsAttackEditModeById] = useState(null);
 
@@ -49,22 +49,22 @@ const Monster = ({
     });
     return obj;
   };
-  const fetchMonsterImgList = useMemo(() => {
-    if (!fetchMonster.name) return;
-    setAttackFields(fetchMonster.attacks);
-    imageListFormat(fetchMonster.images);
-  }, [fetchMonster]);
+  const patchMonsterImgList = useMemo(() => {
+    if (!patchMonster.name) return;
+    setAttackFields(patchMonster.attacks);
+    return imageListFormat(patchMonster.images);
+  }, [patchMonster]);
 
   const defaultValue = useMemo(() => {
-    return fetchMonster.name
+    return patchMonster.name
       ? {
-          name: fetchMonster.name,
-          level: fetchMonster.level,
-          health: fetchMonster.health,
-          ...fetchMonsterImgList,
+          name: patchMonster.name,
+          level: patchMonster.level,
+          health: patchMonster.health,
+          ...patchMonsterImgList,
         }
       : {};
-  }, []);
+  }, [patchMonster]);
 
   const getMonstersData = async () => {
     const data = await getMonsterList();
@@ -79,6 +79,7 @@ const Monster = ({
 
   const updateInputData = useCallback(
     (data) => {
+      console.log('input data', data);
       resetAllRefs(attackRefs);
       updateValueRef(InfoRefs, data);
       updateValueRef(imgRefs, data);
@@ -109,18 +110,18 @@ const Monster = ({
     setAttackFields([]);
   };
 
-  const handleFetchMonster = async () => {
+  const handlepatchMonster = async () => {
     const result = dataResetAlert('fetch');
     if (!result) return false;
     getMonstersData();
-    setFetchMonster({});
+    setpatchMonster({});
     setAttackFields([]);
     setUpdateMode('fetch');
   };
 
   // Select Monster
-  const handleFetchMonsterByName = (selected) => {
-    setFetchMonster(selected);
+  const handlepatchMonsterByName = (selected) => {
+    setpatchMonster(selected);
   };
 
   const handleChangeMonsterSubmit = (selected) => {
@@ -192,6 +193,7 @@ const Monster = ({
     ];
 
     const data = {
+      id: patchMonster.id,
       name: InfoRefs.name.current.value,
       level: +InfoRefs.level.current.value,
       attacks: attackFields,
@@ -209,23 +211,23 @@ const Monster = ({
       '정말 삭제하시겠습니까? 삭제한 몬스터는 다시 불러올 수 없습니다.',
     );
     if (!result) return false;
-    await deleteMonster(fetchMonster.id);
+    await deleteMonster(patchMonster.id);
     window.alert('삭제되었습니다.');
     await handleChangeMonster('change');
   };
 
   useEffect(() => {
-    if (updateMode === 'fetch' && fetchMonster.name) {
+    if (updateMode === 'fetch' && patchMonster.name) {
       updateInputData(defaultValue);
     }
-  }, [updateInputData, defaultValue, fetchMonster, updateMode]);
+  }, [updateInputData, defaultValue, patchMonster, updateMode]);
 
   return (
     <div className="data-editor-monster-content">
       <div className="sub-menu">
         <button onClick={handleChangeMonster}>몬스터 변경하기</button>
         <button onClick={handleCreatMonster}>몬스터 생성하기</button>
-        <button onClick={handleFetchMonster}>몬스터 수정하기</button>
+        <button onClick={handlepatchMonster}>몬스터 수정하기</button>
       </div>
       <div>
         {(updateMode === 'change' || updateMode === 'fetch') && (
@@ -236,7 +238,7 @@ const Monster = ({
                 onClick={() =>
                   updateMode === 'change'
                     ? handleChangeMonsterSubmit(index)
-                    : handleFetchMonsterByName(item)
+                    : handlepatchMonsterByName(item)
                 }
               >
                 {item.name}
@@ -245,7 +247,7 @@ const Monster = ({
           </div>
         )}
         {(updateMode === 'creat' ||
-          (updateMode === 'fetch' && fetchMonster.name)) && (
+          (updateMode === 'fetch' && patchMonster.name)) && (
           <div className="input-container">
             저장하지 않고 이탈할경우 데이터는 사라집니다. 모든 데이터는
             필수값입니다.
