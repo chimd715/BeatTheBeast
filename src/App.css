@@ -17,4 +17,5 @@ body {
 .game-container {
   background-image: url(./img/bg.jpeg);
   height: 100vh;
+  overflow: hidden;
 }
