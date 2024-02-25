@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Hobodang from './Hobodang';
 import Monster from './Monster';
 import './index.css';
@@ -8,13 +8,20 @@ const GameSetting = ({
   setSelectedMonster,
   setInitialMonsterHealth,
   setMonsterState,
+  customButton,
+  selectedMonster,
 }) => {
   const [visible, setVisible] = useState(false);
   const [tab, setTab] = useState('player');
+
   return (
     <>
-      <div style={{ width: 20, height: 20 }} onClick={() => setVisible(true)}>
-        <img src="img/setting.png" alt="설정" />
+      <div onClick={() => setVisible(true)}>
+        {customButton || (
+          <div style={{ width: 20, height: 20 }}>
+            <img src="img/setting.png" alt="설정" />
+          </div>
+        )}
       </div>
       {visible && (
         <div className="modal">
@@ -27,9 +34,13 @@ const GameSetting = ({
               수정된 데이터는 즉시 반영됩니다.
             </p>
             <div className="content">
-              <nav className="menu">
-                <button onClick={() => setTab('player')}>호보당</button>
-                <button onClick={() => setTab('monster')}>괴수</button>
+              <nav className={`menu ${tab}`}>
+                <button className="player" onClick={() => setTab('player')}>
+                  <h2>호보당</h2>
+                </button>
+                <button className="monster" onClick={() => setTab('monster')}>
+                  <h2>괴수</h2>
+                </button>
               </nav>
               <div className="data-editor">
                 {tab === 'player' && (
@@ -40,6 +51,7 @@ const GameSetting = ({
                     setSelectedMonster={setSelectedMonster}
                     setInitialMonsterHealth={setInitialMonsterHealth}
                     setMonsterState={setMonsterState}
+                    selectedMonster={selectedMonster}
                   />
                 )}
               </div>

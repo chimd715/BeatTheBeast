@@ -16,50 +16,63 @@ const App = () => {
   }, [player]);
 
   return (
-    <div>
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: 40,
-        }}
-      >
-        {selectedMonster.name ? (
-          <HealthBar
-            health={selectedMonster.health}
-            initialHealth={initialHealth}
+    <>
+      {selectedMonster.name ? (
+        <div>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: 40,
+            }}
+          >
+            <HealthBar
+              health={selectedMonster.health}
+              initialHealth={initialHealth}
+              setMonsterState={setMonsterState}
+            />
+            <GameSetting
+              player={player}
+              setPlayer={setPlayer}
+              setSelectedMonster={setSelectedMonster}
+              setInitialMonsterHealth={setInitialMonsterHealth}
+              setMonsterState={setMonsterState}
+              selectedMonster={selectedMonster}
+            />
+          </div>
+          <div className="main-container">
+            <Monster
+              selectedMonster={selectedMonster}
+              monsterState={monsterState}
+              setMonsterState={setMonsterState}
+              setSelectedMonsterAttack={setSelectedMonsterAttack}
+            />
+            <Wheel
+              items={group}
+              selectedMonsterAttack={selectedMonsterAttack}
+              setSelectedMonsterAttack={setSelectedMonsterAttack}
+            />
+            <MonsterAttack
+              setMonster={setSelectedMonster}
+              setMonsterState={setMonsterState}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="intro">
+          <h1>몬스터를 선택해주세요</h1>
+          <GameSetting
+            player={player}
+            setPlayer={setPlayer}
+            setSelectedMonster={setSelectedMonster}
+            setInitialMonsterHealth={setInitialMonsterHealth}
             setMonsterState={setMonsterState}
+            customButton={<button className="default">몬스터 선택하기</button>}
           />
-        ) : (
-          <div className="intro">'몬스터를 세팅해주세요.'</div>
-        )}
-        <GameSetting
-          player={player}
-          setPlayer={setPlayer}
-          setSelectedMonster={setSelectedMonster}
-          setInitialMonsterHealth={setInitialMonsterHealth}
-          setMonsterState={setMonsterState}
-        />
-      </div>
-      <div className="main-container">
-        <Monster
-          selectedMonster={selectedMonster}
-          monsterState={monsterState}
-          setMonsterState={setMonsterState}
-          setSelectedMonsterAttack={setSelectedMonsterAttack}
-        />
-        <Wheel
-          items={group}
-          selectedMonsterAttack={selectedMonsterAttack}
-          setSelectedMonsterAttack={setSelectedMonsterAttack}
-        />
-        <MonsterAttack
-          setMonster={setSelectedMonster}
-          setMonsterState={setMonsterState}
-        />
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 

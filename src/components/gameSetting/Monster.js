@@ -11,17 +11,23 @@ import {
   postMonster,
 } from '../../service/monster';
 import { resetAllRefs, updateValueRef } from '../../utills';
+import { KR_MAP } from './assets';
 
 const Monster = ({
   setSelectedMonster,
   setInitialMonsterHealth,
   setMonsterState,
+  selectedMonster,
 }) => {
   const [updateMode, setUpdateMode] = useState('change');
   const [monsterList, setMonsterList] = useState([]);
   const [patchMonster, setpatchMonster] = useState({});
   const [attackFields, setAttackFields] = useState([]);
   const [isAttackEditModeById, setIsAttackEditModeById] = useState(null);
+
+  useEffect(() => {
+    getMonstersData();
+  }, []);
 
   const attackRefs = {
     attackName: useRef(null),
@@ -79,7 +85,6 @@ const Monster = ({
 
   const updateInputData = useCallback(
     (data) => {
-      console.log('input data', data);
       resetAllRefs(attackRefs);
       updateValueRef(InfoRefs, data);
       updateValueRef(imgRefs, data);
@@ -102,25 +107,25 @@ const Monster = ({
     getMonstersData();
   };
 
-  const handleCreatMonster = () => {
-    const result = dataResetAlert('creat');
+  const handleCreateMonster = () => {
+    const result = dataResetAlert('create');
     if (!result) return false;
     resetInputData();
-    setUpdateMode('creat');
+    setUpdateMode('create');
     setAttackFields([]);
   };
 
-  const handlepatchMonster = async () => {
-    const result = dataResetAlert('fetch');
+  const handlePatchMonster = async () => {
+    const result = dataResetAlert('patch');
     if (!result) return false;
     getMonstersData();
     setpatchMonster({});
     setAttackFields([]);
-    setUpdateMode('fetch');
+    setUpdateMode('patch');
   };
 
   // Select Monster
-  const handlepatchMonsterByName = (selected) => {
+  const handlePatchMonsterByName = (selected) => {
     setpatchMonster(selected);
   };
 
@@ -161,6 +166,10 @@ const Monster = ({
       }
     });
     setAttackFields(updatedAttackFields);
+    setIsAttackEditModeById(null);
+    resetAllRefs(attackRefs);
+  };
+  const resetAttackField = () => {
     setIsAttackEditModeById(null);
     resetAllRefs(attackRefs);
   };
@@ -217,50 +226,68 @@ const Monster = ({
   };
 
   useEffect(() => {
-    if (updateMode === 'fetch' && patchMonster.name) {
+    if (updateMode === 'patch' && patchMonster.name) {
       updateInputData(defaultValue);
     }
   }, [updateInputData, defaultValue, patchMonster, updateMode]);
 
   return (
     <div className="data-editor-monster-content">
-      <div className="sub-menu">
-        <button onClick={handleChangeMonster}>몬스터 변경하기</button>
-        <button onClick={handleCreatMonster}>몬스터 생성하기</button>
-        <button onClick={handlepatchMonster}>몬스터 수정하기</button>
+      <div className={`sub-menu ${updateMode}`}>
+        <button className="secondary change" onClick={handleChangeMonster}>
+          몬스터 변경하기
+        </button>
+        <button className="secondary create" onClick={handleCreateMonster}>
+          몬스터 생성하기
+        </button>
+        <button className="secondary patch" onClick={handlePatchMonster}>
+          몬스터 수정하기
+        </button>
       </div>
       <div>
-        {(updateMode === 'change' || updateMode === 'fetch') && (
-          <div>
-            {monsterList.map((item, index) => (
-              <button
-                key={item.name}
-                onClick={() =>
-                  updateMode === 'change'
-                    ? handleChangeMonsterSubmit(index)
-                    : handlepatchMonsterByName(item)
-                }
-              >
-                {item.name}
-              </button>
-            ))}
+        {(updateMode === 'change' || updateMode === 'patch') && (
+          <div className="local-monster">
+            {monsterList
+              .sort((a, b) => a.level - b.level)
+              .map((item, index) => {
+                return (
+                  <button
+                    className={`tertiary ${
+                      selectedMonster?.id === item.id
+                        ? 'selected'
+                        : 'unselected'
+                    }`}
+                    key={item.name}
+                    onClick={() =>
+                      updateMode === 'change'
+                        ? handleChangeMonsterSubmit(index)
+                        : handlePatchMonsterByName(item)
+                    }
+                  >
+                    Lv{item.level}.{item.name}
+                  </button>
+                );
+              })}
           </div>
         )}
-        {(updateMode === 'creat' ||
-          (updateMode === 'fetch' && patchMonster.name)) && (
+        {(updateMode === 'create' ||
+          (updateMode === 'patch' && patchMonster.name)) && (
           <div className="input-container">
-            저장하지 않고 이탈할경우 데이터는 사라집니다. 모든 데이터는
-            필수값입니다.
-            {updateMode === 'fetch' && (
+            <p style={{ marginTop: '10px', position: 'relative' }}>
+              저장하지 않고 이탈할경우 데이터는 사라집니다.
+            </p>
+            {updateMode === 'patch' && (
               <button onClick={handleDeleteMonster}>삭제</button>
             )}
             <div className="monster-data-container">
               <section>
-                <p>몬스터 정보</p>
-                <div>
+                <p>
+                  <span className="require">*</span>괴수 정보
+                </p>
+                <div style={{ display: 'flex' }}>
                   {Object.keys(InfoRefs).map((fieldName) => (
-                    <div key={fieldName}>
-                      <span>{fieldName}</span>
+                    <div key={fieldName} className="input-felid">
+                      <span>{KR_MAP[fieldName]}</span>
                       <input
                         defaultValue={defaultValue[fieldName] ?? ''}
                         ref={InfoRefs[fieldName]}
@@ -270,11 +297,13 @@ const Monster = ({
                 </div>
               </section>
               <section>
-                <p>이미지</p>
+                <p>
+                  <span className="require">*</span>이미지
+                </p>
                 <div>
                   {Object.keys(imgRefs).map((fieldName) => (
-                    <div key={fieldName}>
-                      <span>{fieldName}</span>
+                    <div key={fieldName} className="input-felid">
+                      <span>{KR_MAP[fieldName]}</span>
                       <input
                         defaultValue={defaultValue[fieldName] ?? ''}
                         ref={imgRefs[fieldName]}
@@ -284,44 +313,69 @@ const Monster = ({
                 </div>
               </section>
               <section>
-                <p>공격</p>
-                <div>
+                <p>
+                  <span className="require">*</span>공격
+                </p>
+                <div className="attack-input-container">
                   {Object.keys(attackRefs).map((fieldName) => (
-                    <div key={fieldName}>
-                      <span>{fieldName}</span>
+                    <div key={fieldName} className="input-felid">
+                      <span>{KR_MAP[fieldName]}</span>
                       <input
                         defaultValue={defaultValue[fieldName]}
                         ref={attackRefs[fieldName]}
                       />
                     </div>
                   ))}
-
-                  {isAttackEditModeById ? (
-                    <button onClick={updateAttackField}>update Attack</button>
-                  ) : (
-                    <button onClick={addAttackField}>Add Attack</button>
-                  )}
-                </div>
-                {attackFields.map(
-                  ({ name, damage, num_of_attack }, index, { length }) => {
-                    return (
-                      <div>
-                        이름{name} 데미지 {damage} 횟수{num_of_attack}
-                        {length !== 1 && (
-                          <button onClick={() => removeAttackField(index)}>
-                            Remove
-                          </button>
-                        )}
-                        <button onClick={() => handleSetEditData(index)}>
-                          edit
-                        </button>
+                  <div className="option-button">
+                    {isAttackEditModeById !== null ? (
+                      <div className="update-option">
+                        <button onClick={updateAttackField}>변경</button>
+                        <button onClick={resetAttackField}>취소</button>
                       </div>
-                    );
-                  },
-                )}
+                    ) : (
+                      <button onClick={addAttackField}>추가</button>
+                    )}
+                  </div>
+                </div>
+                <div className="saved-attack">
+                  <div className="th">
+                    <div>이름</div>
+                    <div>피해량</div>
+                    <div>횟수</div>
+                    <div>옵션</div>
+                  </div>
+                  <div className="tb">
+                    {attackFields.map(
+                      ({ name, damage, num_of_attack }, index, { length }) => {
+                        return (
+                          <div className="colum">
+                            <div>{name}</div>
+                            <div>{damage}</div>
+                            <div>{num_of_attack}</div>
+                            <div>
+                              {length !== 1 && (
+                                <button
+                                  style={{ marginRight: '10px' }}
+                                  onClick={() => removeAttackField(index)}
+                                >
+                                  삭제
+                                </button>
+                              )}
+                              <button onClick={() => handleSetEditData(index)}>
+                                수정
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      },
+                    )}
+                  </div>
+                </div>
               </section>
             </div>
-            <button onClick={handleSubmit}>저장</button>
+            <button className="submit" onClick={handleSubmit}>
+              데이터 저장
+            </button>
           </div>
         )}
       </div>
