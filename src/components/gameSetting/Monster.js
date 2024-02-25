@@ -99,9 +99,11 @@ const Monster = ({
   };
 
   // Menu Change
-  const handleChangeMonster = async () => {
-    const result = dataResetAlert('change');
-    if (!result) return false;
+  const handleChangeMonster = async (from) => {
+    if (from !== 'remove') {
+      const result = dataResetAlert('change');
+      if (!result) return false;
+    }
     resetInputData();
     setUpdateMode('change');
     getMonstersData();
@@ -242,7 +244,7 @@ const Monster = ({
     if (!result) return false;
     await deleteMonster(patchMonster.id);
     window.alert('삭제되었습니다.');
-    await handleChangeMonster('change');
+    await handleChangeMonster('remove');
   };
 
   useEffect(() => {
@@ -352,66 +354,6 @@ const Monster = ({
                 ref={savedAttackFieldsRef}
                 patchMonster={patchMonster}
               />
-              {/* <section>
-                <p>
-                  <span className="require">*</span>공격
-                </p>
-                <div className="attack-input-container">
-                  {Object.keys(attackRefs).map((fieldName) => (
-                    <div key={fieldName} className="input-felid">
-                      <span>{KR_MAP[fieldName]}</span>
-                      <input
-                        defaultValue={defaultValue[fieldName]}
-                        ref={attackRefs[fieldName]}
-                      />
-                    </div>
-                  ))}
-                  <div className="option-button">
-                    {isAttackEditModeById !== null ? (
-                      <div className="update-option">
-                        <button onClick={updateAttackField}>변경</button>
-                        <button onClick={resetAttackField}>취소</button>
-                      </div>
-                    ) : (
-                      <button onClick={addAttackField}>추가</button>
-                    )}
-                  </div>
-                </div>
-                <div className="saved-attack">
-                  <div className="th">
-                    <div>이름</div>
-                    <div>피해량</div>
-                    <div>횟수</div>
-                    <div>옵션</div>
-                  </div>
-                  <div className="tb">
-                    {attackFields.map(
-                      ({ name, damage, num_of_attack }, index, { length }) => {
-                        return (
-                          <div className="colum">
-                            <div>{name}</div>
-                            <div>{damage}</div>
-                            <div>{num_of_attack}</div>
-                            <div>
-                              {length !== 1 && (
-                                <button
-                                  style={{ marginRight: '10px' }}
-                                  onClick={() => removeAttackField(index)}
-                                >
-                                  삭제
-                                </button>
-                              )}
-                              <button onClick={() => handleSetEditData(index)}>
-                                수정
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      },
-                    )}
-                  </div>
-                </div>
-              </section> */}
             </div>
             <button className="submit" onClick={handleSubmit}>
               데이터 저장
