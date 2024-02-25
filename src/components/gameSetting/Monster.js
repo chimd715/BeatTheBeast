@@ -26,8 +26,10 @@ const Monster = ({
   const [isAttackEditModeById, setIsAttackEditModeById] = useState(null);
 
   useEffect(() => {
-    getMonstersData();
-  }, []);
+    if (updateMode === 'change') {
+      getMonstersData();
+    }
+  }, [updateMode]);
 
   const attackRefs = {
     attackName: useRef(null),
@@ -105,6 +107,7 @@ const Monster = ({
     resetInputData();
     setUpdateMode('change');
     getMonstersData();
+    setpatchMonster({});
   };
 
   const handleCreateMonster = () => {
@@ -113,6 +116,7 @@ const Monster = ({
     resetInputData();
     setUpdateMode('create');
     setAttackFields([]);
+    setpatchMonster({});
   };
 
   const handlePatchMonster = async () => {
@@ -212,6 +216,8 @@ const Monster = ({
     };
 
     await postMonster(data);
+    window.alert('괴수를 생성하였습니다.');
+    setUpdateMode('change');
   };
 
   // Delete Monster
@@ -253,7 +259,11 @@ const Monster = ({
                 return (
                   <button
                     className={`tertiary ${
-                      selectedMonster?.id === item.id
+                      updateMode === 'change'
+                        ? selectedMonster?.id === item.id
+                          ? 'selected'
+                          : 'unselected'
+                        : patchMonster?.id === item.id
                         ? 'selected'
                         : 'unselected'
                     }`}
@@ -277,7 +287,9 @@ const Monster = ({
               저장하지 않고 이탈할경우 데이터는 사라집니다.
             </p>
             {updateMode === 'patch' && (
-              <button onClick={handleDeleteMonster}>삭제</button>
+              <button className="remove-monster" onClick={handleDeleteMonster}>
+                괴수 삭제
+              </button>
             )}
             <div className="monster-data-container">
               <section>

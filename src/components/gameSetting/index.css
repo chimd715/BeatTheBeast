@@ -28,7 +28,7 @@
 .modal-close {
   height: 20px;
   position: absolute;
-  right: 20px;
+  right: 50px;
 }
 .content-main-noti {
   margin: 0;
@@ -85,6 +85,7 @@ button:hover {
   display: flex;
   margin-top: 20px;
   gap: 15px;
+  flex-wrap: wrap;
 }
 .local-monster button.selected {
   color: #000;
@@ -158,6 +159,13 @@ input:focus {
 }
 .submit:hover {
   font-weight: 600;
+}
+
+.remove-monster {
+  position: absolute;
+  right: 50px;
+  font-size: 15px;
+  color: red;
 }
 
 /* attack */

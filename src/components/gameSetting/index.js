@@ -27,7 +27,6 @@ const GameSetting = ({
         <div className="modal">
           <div className="modal-content">
             <div className="modal-close" onClick={() => setVisible(false)}>
-              {/* <img src="img/setting.png" alt="설정" /> */}
               닫기
             </div>
             <p className="content-main-noti">
