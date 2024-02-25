@@ -4,16 +4,17 @@ import './index.css';
 const MonsterAttack = ({ setMonster, setMonsterState }) => {
   const inputRef = useRef();
   const handleSubmit = () => {
+    if(!inputRef.current.value ) return;
     setMonsterState('hit');
     setMonster((prev) => {
       return { ...prev, health: prev.health - inputRef.current.value };
     });
   };
   return (
-    <>
-      <button onClick={handleSubmit}>호보당 공격</button>
+    <div className="attack-hobodang">
       <input ref={inputRef} />
-    </>
+      <button onClick={handleSubmit}>호보당 공격</button>
+    </div>
   );
 };
 

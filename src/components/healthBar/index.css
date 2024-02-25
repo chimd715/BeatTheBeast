@@ -1,0 +1,28 @@
+/* winning */
+.winning-modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
+}
+
+.winning-modal-content {
+  position: relative;
+  width: 50%;
+}
+.winning-modal-content img {
+  width: 100%;
+}
+.winning-modal-close {
+  font-size: 50px;
+  position: absolute;
+  color: #fff;
+  right: 0;
+  cursor: pointer;
+}

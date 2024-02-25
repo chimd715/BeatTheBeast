@@ -12,6 +12,7 @@ import {
 } from '../../service/monster';
 import { resetAllRefs, updateValueRef } from '../../utills';
 import { KR_MAP } from './assets';
+import MonsterAttckList from './MonsterAttckList';
 
 const Monster = ({
   setSelectedMonster,
@@ -22,15 +23,11 @@ const Monster = ({
 }) => {
   const [updateMode, setUpdateMode] = useState('change');
   const [monsterList, setMonsterList] = useState([]);
-  const [patchMonster, setpatchMonster] = useState({});
+  const [patchMonster, setPatchMonster] = useState({});
   const [attackFields, setAttackFields] = useState([]);
   const [isAttackEditModeById, setIsAttackEditModeById] = useState(null);
 
-  useEffect(() => {
-    if (updateMode === 'change') {
-      getMonstersData();
-    }
-  }, [updateMode]);
+  const savedAttackFieldsRef = useRef();
 
   const attackRefs = {
     attackName: useRef(null),
@@ -108,7 +105,7 @@ const Monster = ({
     resetInputData();
     setUpdateMode('change');
     getMonstersData();
-    setpatchMonster({});
+    setPatchMonster({});
   };
 
   const handleCreateMonster = () => {
@@ -117,21 +114,21 @@ const Monster = ({
     resetInputData();
     setUpdateMode('create');
     setAttackFields([]);
-    setpatchMonster({});
+    setPatchMonster({});
   };
 
   const handlePatchMonster = async () => {
     const result = dataResetAlert('patch');
     if (!result) return false;
     getMonstersData();
-    setpatchMonster({});
+    setPatchMonster({});
     setAttackFields([]);
     setUpdateMode('patch');
   };
 
   // Select Monster
   const handlePatchMonsterByName = (selected) => {
-    setpatchMonster(selected);
+    setPatchMonster(selected);
   };
 
   const handleChangeMonsterSubmit = (selected) => {
@@ -175,6 +172,7 @@ const Monster = ({
     setIsAttackEditModeById(null);
     resetAllRefs(attackRefs);
   };
+
   const resetAttackField = () => {
     setIsAttackEditModeById(null);
     resetAllRefs(attackRefs);
@@ -207,25 +205,39 @@ const Monster = ({
       { url: imgRefs.hitImg.current.value, image_type: 'hit' },
     ];
 
+    const imgRequireCheck = images.every((list) => !!list.url);
+
     const data = {
       id: patchMonster.id,
       name: InfoRefs.name.current.value,
       level: +InfoRefs.level.current.value,
-      attacks: attackFields,
+      attacks: savedAttackFieldsRef.current.attackFields,
       health: +InfoRefs.health.current.value,
       attack: 0,
       images,
     };
 
+    if (!InfoRefs.name.current.value)
+      return window.alert('이름을 입려해주세요.');
+    if (!InfoRefs.level.current.value)
+      return window.alert('레벨을 입려해주세요.');
+    if (!InfoRefs.health.current.value)
+      return window.alert('체력을 입려해주세요.');
+    if (!imgRequireCheck) return window.alert('이미지를 모두 입력해주세요.');
+    if (!savedAttackFieldsRef.current.attackFields.length)
+      return window.alert('공격을 추가해주세요.');
+
     await postMonster(data);
-    window.alert('괴수를 생성하였습니다.');
+    window.alert(
+      `괴수를 ${updateMode === 'create' ? '생성' : '수정'}하였습니다.`,
+    );
     setUpdateMode('change');
   };
 
   // Delete Monster
   const handleDeleteMonster = async () => {
     const result = window.confirm(
-      '정말 삭제하시겠습니까? 삭제한 몬스터는 다시 불러올 수 없습니다.',
+      '정말 삭제하시겠습니까? 삭제한 괴수는 다시 불러올 수 없습니다.',
     );
     if (!result) return false;
     await deleteMonster(patchMonster.id);
@@ -239,17 +251,23 @@ const Monster = ({
     }
   }, [updateInputData, defaultValue, patchMonster, updateMode]);
 
+  useEffect(() => {
+    if (updateMode === 'change') {
+      getMonstersData();
+    }
+  }, [updateMode]);
+
   return (
     <div className="data-editor-monster-content">
       <div className={`sub-menu ${updateMode}`}>
         <button className="secondary change" onClick={handleChangeMonster}>
-          몬스터 변경하기
+          괴수 변경하기
         </button>
         <button className="secondary create" onClick={handleCreateMonster}>
-          몬스터 생성하기
+          괴수 생성하기
         </button>
         <button className="secondary patch" onClick={handlePatchMonster}>
-          몬스터 수정하기
+          괴수 수정하기
         </button>
       </div>
       <div>
@@ -313,6 +331,10 @@ const Monster = ({
               <section>
                 <p>
                   <span className="require">*</span>이미지
+                  <span style={{ fontSize: 12, fontWeight: 300 }}>
+                    ( 권장 이미지 : 높이 800px 이하, 이미지 높이 > 이미지 넓이,
+                    확장자 png )
+                  </span>
                 </p>
                 <div>
                   {Object.keys(imgRefs).map((fieldName) => (
@@ -326,7 +348,11 @@ const Monster = ({
                   ))}
                 </div>
               </section>
-              <section>
+              <MonsterAttckList
+                ref={savedAttackFieldsRef}
+                patchMonster={patchMonster}
+              />
+              {/* <section>
                 <p>
                   <span className="require">*</span>공격
                 </p>
@@ -385,7 +411,7 @@ const Monster = ({
                     )}
                   </div>
                 </div>
-              </section>
+              </section> */}
             </div>
             <button className="submit" onClick={handleSubmit}>
               데이터 저장

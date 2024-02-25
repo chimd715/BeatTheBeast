@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import HealthBar from './HealthBar'; // Assuming HealthBar component is in HealthBar.js
+import HealthBar from './components/healthBar/HealthBar'; // Assuming HealthBar component is in HealthBar.js
 import Wheel from './components/wheel'; // Assuming RouletteWheel component is in RouletteWheel.js
 import Monster from './components/monster';
 import GameSetting from './components/gameSetting';
@@ -15,16 +15,17 @@ const App = () => {
     return Array.from({ length: player }, (_, index) => index + 1);
   }, [player]);
 
+  console.log(selectedMonster.health);
   return (
     <>
       {selectedMonster.name ? (
-        <div>
+        <div className="game-container">
           <div
             style={{
               width: '100%',
               display: 'flex',
               alignItems: 'center',
-              marginBottom: 40,
+              marginBottom: 10,
             }}
           >
             <HealthBar
@@ -53,22 +54,22 @@ const App = () => {
               selectedMonsterAttack={selectedMonsterAttack}
               setSelectedMonsterAttack={setSelectedMonsterAttack}
             />
-            <MonsterAttack
-              setMonster={setSelectedMonster}
-              setMonsterState={setMonsterState}
-            />
           </div>
+          <MonsterAttack
+            setMonster={setSelectedMonster}
+            setMonsterState={setMonsterState}
+          />
         </div>
       ) : (
         <div className="intro">
-          <h1>몬스터를 선택해주세요</h1>
+          <h1>괴수를 선택해주세요</h1>
           <GameSetting
             player={player}
             setPlayer={setPlayer}
             setSelectedMonster={setSelectedMonster}
             setInitialMonsterHealth={setInitialMonsterHealth}
             setMonsterState={setMonsterState}
-            customButton={<button className="default">몬스터 선택하기</button>}
+            customButton={<button className="default">괴수 선택하기</button>}
           />
         </div>
       )}

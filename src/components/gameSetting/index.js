@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Hobodang from './Hobodang';
 import Monster from './Monster';
+import settingImg from '../../img/setting.png';
 import './index.css';
 const GameSetting = ({
   setPlayer,
@@ -16,10 +17,13 @@ const GameSetting = ({
 
   return (
     <>
-      <div onClick={() => setVisible(true)}>
+      <div onClick={() => setVisible(true)} className="setting-btn">
         {customButton || (
-          <div style={{ width: 20, height: 20 }}>
-            <img src="img/setting.png" alt="설정" />
+          <div
+            className="setting-icon-container"
+            style={{ width: 20, height: 20 }}
+          >
+            <img src={settingImg} alt="설정" />
           </div>
         )}
       </div>
@@ -43,7 +47,11 @@ const GameSetting = ({
               </nav>
               <div className="data-editor">
                 {tab === 'player' && (
-                  <Hobodang setPlayer={setPlayer} player={player} />
+                  <Hobodang
+                    setPlayer={setPlayer}
+                    player={player}
+                    setVisible={setVisible}
+                  />
                 )}
                 {tab === 'monster' && (
                   <Monster

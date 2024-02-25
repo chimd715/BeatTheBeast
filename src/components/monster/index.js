@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import './index.css';
 
 const Monster = ({
@@ -28,22 +28,49 @@ const Monster = ({
     setSelectedMonsterAttack(attack);
   };
 
+  console.log(attacks);
   return (
     <div className="monster-container">
       <div className="img-container">
         <img src={image} alt="괴물" />
       </div>
       <div className="info">
-        <p className="name">{name}</p>
-        <p>Lv {level}</p>
-        <p>공격기</p>
-        {attacks &&
-          attacks.map((attack) => (
-            <button key={attack.name} onClick={() => handleAttack(attack)}>
-              {attack.name}
-            </button>
-          ))}
+        <p className="name">
+          <p className="level">Lv {level}</p> <p>{name}</p>
+        </p>
+        <p className="attack">공격기</p>
+        <div className="attack-list-button">
+          {attacks &&
+            attacks.map((attack) => (
+              <div>
+                <button key={attack.name} onClick={() => handleAttack(attack)}>
+                  {attack.name}{' '}
+                  <span style={{ fontSize: 18 }}>
+                    ({attack.num_of_attack}회 공격)
+                  </span>
+                </button>
+              </div>
+            ))}
+        </div>
       </div>
+      {selectedMonster.health <= 0 && (
+        <div
+          style={{
+            backgroundColor: 'rgba(0,0,0,.8)',
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            fontSize: 100,
+            color: 'red',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          토벌 완료
+        </div>
+      )}
     </div>
   );
 };

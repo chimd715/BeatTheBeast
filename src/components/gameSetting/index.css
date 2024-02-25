@@ -1,3 +1,10 @@
+.setting-btn img {
+  width: 100%;
+  cursor: pointer;
+}
+.setting-icon-container {
+  transform: translate(-20px, -3px);
+}
 .modal {
   z-index: 100;
   position: absolute;
@@ -21,7 +28,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: url(/public/img/settingBg.png) no-repeat center;
+  background: url(../../img/settingBg.png) no-repeat center;
   background-size: 100% 100%;
 }
 
@@ -29,6 +36,7 @@
   height: 20px;
   position: absolute;
   right: 50px;
+  cursor: pointer;
 }
 .content-main-noti {
   margin: 0;
@@ -77,7 +85,6 @@ button:hover {
   padding-top: 15px;
   margin-top: 15px;
   overflow-y: scroll;
-  /* background: url(/public/img/bg.jpeg) no-repeat; */
   background-size: 100% 100%;
 }
 
@@ -162,10 +169,11 @@ input:focus {
 }
 
 .remove-monster {
-  position: absolute;
-  right: 50px;
+  position: relative;
   font-size: 15px;
   color: red;
+  left: 100%;
+  transform: translateX(calc(-50% - 30px));
 }
 
 /* attack */
