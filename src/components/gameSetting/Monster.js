@@ -18,6 +18,7 @@ const Monster = ({
   setInitialMonsterHealth,
   setMonsterState,
   selectedMonster,
+  setVisible,
 }) => {
   const [updateMode, setUpdateMode] = useState('change');
   const [monsterList, setMonsterList] = useState([]);
@@ -141,6 +142,7 @@ const Monster = ({
       images: { ...updateImageList },
     });
     setMonsterState('normal');
+    setVisible(false);
   };
 
   // Attack

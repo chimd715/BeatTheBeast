@@ -51,6 +51,7 @@ const GameSetting = ({
                     setInitialMonsterHealth={setInitialMonsterHealth}
                     setMonsterState={setMonsterState}
                     selectedMonster={selectedMonster}
+                    setVisible={setVisible}
                   />
                 )}
               </div>
