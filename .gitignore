@@ -8,8 +8,8 @@
 # testing
 /coverage
 
-# production
-/build
+# production - shouldn't be ignored by gh-pages
+# /build
 
 # misc
 .DS_Store

@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/BeatTheBeast/static/css/main.05136282.css",
+    "main.js": "/BeatTheBeast/static/js/main.8fb5d409.js",
+    "static/js/592.5c41bc80.chunk.js": "/BeatTheBeast/static/js/592.5c41bc80.chunk.js",
+    "index.html": "/BeatTheBeast/index.html",
+    "main.05136282.css.map": "/BeatTheBeast/static/css/main.05136282.css.map",
+    "main.8fb5d409.js.map": "/BeatTheBeast/static/js/main.8fb5d409.js.map",
+    "592.5c41bc80.chunk.js.map": "/BeatTheBeast/static/js/592.5c41bc80.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.05136282.css",
+    "static/js/main.8fb5d409.js"
+  ]
+}
