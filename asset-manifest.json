@@ -1,15 +1,20 @@
 {
   "files": {
-    "main.css": "/BeatTheBeast/static/css/main.05136282.css",
-    "main.js": "/BeatTheBeast/static/js/main.8fb5d409.js",
+    "main.css": "/BeatTheBeast/static/css/main.08a65ff0.css",
+    "main.js": "/BeatTheBeast/static/js/main.a014fd16.js",
     "static/js/592.5c41bc80.chunk.js": "/BeatTheBeast/static/js/592.5c41bc80.chunk.js",
+    "static/media/settingBg.png": "/BeatTheBeast/static/media/settingBg.03d5be869497c2f7c623.png",
+    "static/media/win.png": "/BeatTheBeast/static/media/win.b84ab879b812409870c7.png",
+    "static/media/button.png": "/BeatTheBeast/static/media/button.96660fb5b8ef955ce315.png",
+    "static/media/wheel2.png": "/BeatTheBeast/static/media/wheel2.95cf3ea3869ec6e310f1.png",
+    "static/media/bg.jpeg": "/BeatTheBeast/static/media/bg.c9e41ad4ab877358e33b.jpeg",
     "index.html": "/BeatTheBeast/index.html",
-    "main.05136282.css.map": "/BeatTheBeast/static/css/main.05136282.css.map",
-    "main.8fb5d409.js.map": "/BeatTheBeast/static/js/main.8fb5d409.js.map",
+    "main.08a65ff0.css.map": "/BeatTheBeast/static/css/main.08a65ff0.css.map",
+    "main.a014fd16.js.map": "/BeatTheBeast/static/js/main.a014fd16.js.map",
     "592.5c41bc80.chunk.js.map": "/BeatTheBeast/static/js/592.5c41bc80.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.05136282.css",
-    "static/js/main.8fb5d409.js"
+    "static/css/main.08a65ff0.css",
+    "static/js/main.a014fd16.js"
   ]
 }
