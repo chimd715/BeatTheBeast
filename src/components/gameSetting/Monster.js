@@ -212,7 +212,7 @@ const Monster = ({
     const data = {
       id: patchMonster.id,
       name: InfoRefs.name.current.value,
-      level: +InfoRefs.level.current.value,
+      level: InfoRefs.level.current.value,
       attacks: savedAttackFieldsRef.current.attackFields,
       health: +InfoRefs.health.current.value,
       attack: 0,
@@ -220,18 +220,18 @@ const Monster = ({
     };
 
     if (!InfoRefs.name.current.value)
-      return window.alert('이름을 입려해주세요.');
+      return window.alert('이름을 입력해주세요.');
     if (!InfoRefs.level.current.value)
-      return window.alert('레벨을 입려해주세요.');
+      return window.alert('난이도를 입력해주세요.');
     if (!InfoRefs.health.current.value)
-      return window.alert('체력을 입려해주세요.');
+      return window.alert('체력을 입력해주세요.');
     if (!imgRequireCheck) return window.alert('이미지를 모두 입력해주세요.');
     if (!savedAttackFieldsRef.current.attackFields.length)
       return window.alert('공격을 추가해주세요.');
 
     await postMonster(data);
     window.alert(
-      `괴수를 ${updateMode === 'create' ? '생성' : '수정'}하였습니다.`,
+      `괴물를 ${updateMode === 'create' ? '생성' : '수정'}하였습니다.`,
     );
     setUpdateMode('change');
   };
@@ -239,7 +239,7 @@ const Monster = ({
   // Delete Monster
   const handleDeleteMonster = async () => {
     const result = window.confirm(
-      '정말 삭제하시겠습니까? 삭제한 괴수는 다시 불러올 수 없습니다.',
+      '정말 삭제하시겠습니까? 삭제한 괴물는 다시 불러올 수 없습니다.',
     );
     if (!result) return false;
     await deleteMonster(patchMonster.id);
@@ -263,13 +263,13 @@ const Monster = ({
     <div className="data-editor-monster-content">
       <div className={`sub-menu ${updateMode}`}>
         <button className="secondary change" onClick={handleChangeMonster}>
-          괴수 변경하기
+          괴물 변경하기
         </button>
         <button className="secondary create" onClick={handleCreateMonster}>
-          괴수 생성하기
+          괴물 생성하기
         </button>
         <button className="secondary patch" onClick={handlePatchMonster}>
-          괴수 수정하기
+          괴물 수정하기
         </button>
       </div>
       <div>
@@ -296,7 +296,7 @@ const Monster = ({
                         : handlePatchMonsterByName(item)
                     }
                   >
-                    Lv{item.level}.{item.name}
+                    {item.name} (난이도: {item.level})
                   </button>
                 );
               })}
@@ -305,42 +305,62 @@ const Monster = ({
         {(updateMode === 'create' ||
           (updateMode === 'patch' && patchMonster.name)) && (
           <div className="input-container">
-            <p style={{ marginTop: '10px', position: 'relative' }}>
+            <p style={{ marginTop: '28px', position: 'relative' }}>
               저장하지 않고 이탈할경우 데이터는 사라집니다.
             </p>
             {updateMode === 'patch' && (
               <button className="remove-monster" onClick={handleDeleteMonster}>
-                괴수 삭제
+                괴물 삭제
               </button>
             )}
             <div className="monster-data-container">
               <section>
                 <p>
-                  <span className="require">*</span>괴수 정보
+                  <span className="require">*</span>괴물 정보
                 </p>
                 <div style={{ display: 'flex' }}>
-                  {Object.keys(InfoRefs).map((fieldName) => (
-                    <div key={fieldName} className="input-felid">
-                      <span>{KR_MAP[fieldName]}</span>
+                  {Object.keys(InfoRefs).map((fieldName) => {
+                    // Input based on field name
+                    let input_element = (
                       <input
                         defaultValue={defaultValue[fieldName] ?? ''}
                         ref={InfoRefs[fieldName]}
                       />
-                    </div>
-                  ))}
+                    );
+                    if (fieldName === 'level') {
+                      input_element = (
+                        <select
+                          defaultValue={defaultValue[fieldName] ?? ''}
+                          ref={InfoRefs[fieldName]}
+                        >
+                          {['상', '중', '하', '특'].map((level) => (
+                            <option key={level} value={level}>
+                              {level}
+                            </option>
+                          ))}
+                        </select>
+                      );
+                    }
+
+                    return (
+                      <div key={fieldName} className="input-field">
+                        <span>{KR_MAP[fieldName]}</span>
+                        {input_element}
+                      </div>
+                    );
+                  })}
                 </div>
               </section>
               <section>
                 <p>
                   <span className="require">*</span>이미지
                   <span style={{ fontSize: 12, fontWeight: 300 }}>
-                    ( 권장 이미지 : 높이 800px 이하, 이미지 높이 > 이미지 넓이,
-                    확장자 png )
+                    ( 권장 이미지 : 높이 800px 이하 )
                   </span>
                 </p>
                 <div>
                   {Object.keys(imgRefs).map((fieldName) => (
-                    <div key={fieldName} className="input-felid">
+                    <div key={fieldName} className="input-field">
                       <span>{KR_MAP[fieldName]}</span>
                       <input
                         defaultValue={defaultValue[fieldName] ?? ''}

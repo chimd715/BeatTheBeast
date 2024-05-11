@@ -42,7 +42,7 @@ const GameSetting = ({
                   <h2>호보당</h2>
                 </button>
                 <button className="monster" onClick={() => setTab('monster')}>
-                  <h2>괴수</h2>
+                  <h2>괴물</h2>
                 </button>
               </nav>
               <div className="data-editor">

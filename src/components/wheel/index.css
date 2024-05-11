@@ -187,6 +187,8 @@
 }
 
 .attack-modal-content {
+  -webkit-text-stroke: 1px white;
+
   font-size: 200px;
   font-weight: 600;
   color: blue;
@@ -196,4 +198,12 @@
 .attack-modal-content p {
   word-break: break-all;
   text-align: center;
+}
+
+.attack-modal-content p.attack-info {
+  font-size: 100px;
+  font-weight: 200;
+  color: red;
+  position: relative;
+  max-width: 100%;
 }

@@ -134,21 +134,28 @@ input {
 input:focus {
   outline: none;
 }
-.input-felid {
+.input-field {
   position: relative;
 }
 
-.input-felid input:focus ~ span {
+.input-field input:focus ~ span {
   /* 포커스가 있는 input의 뒤에 오는 span에 스타일을 적용 */
   /* 스타일을 적용할 내용 */
   color: red; /* 예시로 색상을 빨간색으로 설정 */
 }
-.input-felid {
+.input-field {
   display: flex;
   flex-direction: column;
   padding: 2px;
+  margin-top: 8px;
   margin-left: 10px;
   flex: 1;
+}
+
+select {
+  background: transparent;
+  border-bottom: 1px solid #000;
+  font-size: 15px;
 }
 
 .submit {
@@ -205,7 +212,7 @@ input:focus {
 
 .saved-attack {
   margin-left: 10px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 .saved-attack .th {
   width: 70%;

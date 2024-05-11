@@ -90,29 +90,8 @@ const MonsterAttckList = ({ patchMonster }, ref) => {
   return (
     <section>
       <p>
-        <span className="require">*</span>공격
+        <span className="require">*</span>공격 / 방어
       </p>
-      <div className="attack-input-container">
-        {Object.keys(attackRefs).map((fieldName) => (
-          <div key={fieldName} className="input-felid">
-            <span>{KR_MAP[fieldName]}</span>
-            <input
-              defaultValue={defaultValue[fieldName]}
-              ref={attackRefs[fieldName]}
-            />
-          </div>
-        ))}
-        <div className="option-button">
-          {isAttackEditModeById !== null ? (
-            <div className="update-option">
-              <button onClick={updateAttackField}>변경</button>
-              <button onClick={resetAttackField}>취소</button>
-            </div>
-          ) : (
-            <button onClick={addAttackField}>추가</button>
-          )}
-        </div>
-      </div>
       <div className="saved-attack">
         <div className="th">
           <div>이름</div>
@@ -144,6 +123,45 @@ const MonsterAttckList = ({ patchMonster }, ref) => {
                 </div>
               );
             },
+          )}
+        </div>
+      </div>
+      <hr
+        style={{
+          marginTop: '30px',
+          marginLeft: '10px',
+          height: '1px',
+          width: '80%',
+          // backgroundColor: 'black',
+        }}
+      />
+      <div className="attack-input-container">
+        {Object.keys(attackRefs).map((fieldName) => (
+          <div key={fieldName} className="input-field">
+            <span>
+              {KR_MAP[fieldName]}
+              {fieldName == 'damage' ? (
+                <span style={{ fontSize: 10, fontWeight: 300 }}>
+                  ( 방어는 피해량 0 )
+                </span>
+              ) : (
+                <></>
+              )}
+            </span>
+            <input
+              defaultValue={defaultValue[fieldName]}
+              ref={attackRefs[fieldName]}
+            />
+          </div>
+        ))}
+        <div className="option-button">
+          {isAttackEditModeById !== null ? (
+            <div className="update-option">
+              <button onClick={updateAttackField}>변경</button>
+              <button onClick={resetAttackField}>취소</button>
+            </div>
+          ) : (
+            <button onClick={addAttackField}>추가</button>
           )}
         </div>
       </div>

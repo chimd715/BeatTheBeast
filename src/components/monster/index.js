@@ -36,9 +36,9 @@ const Monster = ({
       </div>
       <div className="info">
         <p className="name">
-          <p className="level">Lv {level}</p> <p>{name}</p>
+          <p>{name}</p>
         </p>
-        <p className="attack">공격기</p>
+        <p className="attack">공격/방어기</p>
         <div className="attack-list-button">
           {attacks &&
             attacks.map((attack) => (
@@ -46,7 +46,9 @@ const Monster = ({
                 <button key={attack.name} onClick={() => handleAttack(attack)}>
                   {attack.name}{' '}
                   <span style={{ fontSize: 18 }}>
-                    ({attack.num_of_attack}회 공격)
+                    ({attack.num_of_attack}회{' '}
+                    {attack.damage === 0 ? '방어' : '공격'} / 피해치{' '}
+                    {attack.damage})
                   </span>
                 </button>
               </div>

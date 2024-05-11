@@ -15,7 +15,6 @@ const App = () => {
     return Array.from({ length: player }, (_, index) => index + 1);
   }, [player]);
 
-  console.log(selectedMonster.health);
   return (
     <>
       {selectedMonster.name ? (
@@ -51,25 +50,28 @@ const App = () => {
             />
             <Wheel
               items={group}
+              setMonsterState={setMonsterState}
               selectedMonsterAttack={selectedMonsterAttack}
               setSelectedMonsterAttack={setSelectedMonsterAttack}
             />
           </div>
           <MonsterAttack
+            health={selectedMonster.health}
+            initialHealth={initialHealth}
             setMonster={setSelectedMonster}
             setMonsterState={setMonsterState}
           />
         </div>
       ) : (
         <div className="intro">
-          <h1>괴수를 선택해주세요</h1>
+          <h1>괴물를 선택해주세요</h1>
           <GameSetting
             player={player}
             setPlayer={setPlayer}
             setSelectedMonster={setSelectedMonster}
             setInitialMonsterHealth={setInitialMonsterHealth}
             setMonsterState={setMonsterState}
-            customButton={<button className="default">괴수 선택하기</button>}
+            customButton={<button className="default">괴물 선택하기</button>}
           />
         </div>
       )}

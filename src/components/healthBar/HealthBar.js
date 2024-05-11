@@ -19,7 +19,7 @@ const HealthBar = ({ health, initialHealth, setMonsterState }) => {
       case remainHealth >= 30 && remainHealth < 70:
         return 'yellow';
       case remainHealth < 30:
-        setMonsterState('rage');
+        // setMonsterState('rage');
         return 'red';
     }
   }, [remainHealth]);

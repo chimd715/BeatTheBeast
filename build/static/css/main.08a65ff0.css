@@ -1,2 +1,557 @@
-@import url(//fonts.googleapis.com/earlyaccess/nanumbrushscript.css);@font-face{font-family:ChosunCentennial;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/ChosunCentennial.woff2) format("woff2")}*{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;border:0;box-sizing:border-box;font-family:ChosunCentennial,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;margin:0;padding:0}code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace}body,button,h1,h2,h3,html,li,p,span,ul{border:0;margin:0;padding:0}button{background:none}button.default{background:url(/BeatTheBeast/static/media/button.96660fb5b8ef955ce315.png) no-repeat 50%;background-size:100% 100%;border-radius:8px;color:#000;font-size:24px;font-weight:300;height:150px;padding:10px;text-align:center;width:400px}button.default:hover{cursor:pointer;font-weight:600}button.tertiary{font-size:20px}button.tertiary:hover{color:#000}button.secondary{font-size:20px}.main-container{display:grid;grid-template-columns:1fr 1fr}.winning-modal{align-items:center;background-color:#00000080;bottom:0;display:flex;justify-content:center;left:0;position:absolute;right:0;top:0;z-index:3}.winning-modal-content{position:relative;width:50%}.winning-modal-content img{width:100%}.winning-modal-close{color:#fff;cursor:pointer;font-size:50px;position:absolute;right:0}.nanumbrushscript{font-family:Nanum Brush Script,cursive}:root{--wheel-font:"Nanum Brush Script","Quicksand",sans-serif;--wheel-size:700px;--wheel-slice-spacing:50px;--wheel-border-size:5px;--wheel-color:#f48457;--neutral-color:#edf5f8;--PI:3.14159265358979;--nb-item:0;--item-nb:0;--selected-item:0;--nb-turn:5;--counter:1;--spinning-duration:4s;--reset-duration:0.25s}.wheel-container{background:url(/BeatTheBeast/static/media/wheel2.95cf3ea3869ec6e310f1.png) no-repeat 50%;background-size:100% 100%;border:3px solid #465e73;border-radius:50%;box-sizing:initial;display:block;height:710px;height:calc(var(--wheel-size) + var(--wheel-border-size)*2);margin:auto;padding:3px;position:relative;-webkit-user-select:none;user-select:none;width:710px;width:calc(var(--wheel-size) + var(--wheel-border-size)*2)}.wheel-container:after,.wheel-container:before{border:20px solid #0000;border-left-width:0;content:"";display:block;height:0;position:absolute;top:50%;transform:translateY(-50%);width:0;z-index:2}.wheel-container:before{border-right-color:#465e73;right:0}.wheel-container:after{border-right-color:#edf5f8;border-right-color:var(--neutral-color);right:-5px}.wheel{background-size:100% 100%;border-radius:50%;box-sizing:initial;cursor:pointer;display:block;height:700px;height:var(--wheel-size);margin:5px auto auto;overflow:hidden;position:relative;transform:rotate(0deg);transition:transform .25s;transition:transform var(--reset-duration);width:700px;width:var(--wheel-size)}.wheel.spinning{transform:rotate(calc(5 * 1turn * 1 + (-1turn * 0 / 0)));transform:rotate(calc(var(--nb-turn)*1turn*var(--counter) + -1turn*var(--selected-item)/var(--nb-item, 1)));transition:transform 4s;transition:transform var(--spinning-duration)}.wheel:after{background-color:#edf5f8;background-color:var(--neutral-color);border-radius:50%;content:"";display:block;height:25px;left:50%;position:absolute;top:50%;transform:translate(-50%,-50%);width:25px;z-index:2}.wheel-item{color:#2a4546;font-family:Nanum Brush Script,Quicksand,sans-serif;font-family:var(--wheel-font);font-size:150px;padding:0 85px 0 50px;text-align:right;transform:translateY(-50%) rotate(calc(0 * (1turn / 0)));transform:translateY(-50%) rotate(calc(var(--item-nb)*(1turn/var(--nb-item, 1))));transform-origin:center left;width:50%}.wheel-item,.wheel-item:before{box-sizing:border-box;display:block;left:50%;position:absolute;top:50%}.wheel-item:before{--slice-max-width:calc(var(--PI)*var(--wheel-size) + var(--wheel-size)/2);--slice-width:calc(var(--slice-max-width)/var(--nb-item) - var(--wheel-slice-spacing));border:calc(var(--slice-width)/2) solid #0000;border-left:6px solid #0000;border-right:350px solid #edf5f8;border-right:solid var(--neutral-color) calc(var(--wheel-size)/2);content:" ";height:0;opacity:1;padding-left:0;transform:translate(-50%,-50%);width:0;z-index:-1}.attack-modal,.wheel-bg{align-items:center;display:flex;justify-content:center}.attack-modal{background:#00000080;bottom:0;left:0;position:absolute;right:0;top:0;z-index:100}.attack-modal-close{color:#fff;cursor:pointer;font-size:20px;height:20px;position:absolute;right:50px;right:0}.attack-modal-content{color:blue;font-size:200px;font-weight:600;max-width:70%;position:relative}.attack-modal-content p{text-align:center;word-break:break-all}.monster-container{padding-left:10px;position:relative}.info{border:2px;border-radius:10px;bottom:5px;flex-direction:column;height:100%;overflow:scroll;padding:5px;position:absolute;right:5px;text-align:right}.info,.info .name{align-items:flex-end;display:flex;justify-content:flex-end}.info .name{font-size:40px;font-weight:600;gap:10px}.info .level{font-size:35px;font-weight:400}.info .attack{font-size:30px;font-weight:400}.info .attack-list-button button{font-size:25px;text-align:right}.img-container{display:flex;justify-content:center;width:100%}.img-container img{height:80vh;max-width:100%;min-width:500px}.setting-btn img{cursor:pointer;width:100%}.setting-icon-container{transform:translate(-20px,-3px)}.modal{align-items:center;background:#00000080;bottom:0;display:flex;justify-content:center;left:0;position:absolute;right:0;top:0;z-index:100}.modal-content{background:url(/BeatTheBeast/static/media/settingBg.03d5be869497c2f7c623.png) no-repeat 50%;background-size:100% 100%;border-radius:10px;box-sizing:border-box;display:flex;flex-direction:column;height:95%;min-width:500px;padding:105px 50px 165px;position:relative;width:700px}.modal-close{cursor:pointer;height:20px;position:absolute;right:50px}.content-main-noti{margin:0 0 10px}.content{display:flex;flex:1 1;flex-direction:column;height:100%;overflow:hidden}button{color:#6a737b;cursor:pointer}button:hover{color:#000}.menu{align-items:center;display:flex;gap:20px;justify-content:center;margin-right:15px}.menu.monster .monster,.menu.player .player{color:#000}.menu button{font-size:22px}.menu button:active,.menu button:hover{color:#000}.data-editor{background-size:100% 100%;border-top:1px solid #000;flex-grow:1;margin-top:15px;overflow-y:scroll;padding-top:15px}.local-monster{display:flex;flex-wrap:wrap;gap:15px;margin-top:20px}.local-monster button.selected{color:#000}.sub-menu{display:flex;justify-content:space-around}.sub-menu.change .change,.sub-menu.create .create,.sub-menu.patch .patch{color:#000;font-weight:600}.monster-data-container{height:100%}.require{color:red;margin-right:2px}section{margin-top:20px}input{background:none;border-bottom:1px solid #000;font-size:15px}input:focus{outline:none}.input-felid{position:relative}.input-felid input:focus~span{color:red}.input-felid{display:flex;flex:1 1;flex-direction:column;margin-left:10px;padding:2px}.submit{align-items:flex-end;border-radius:8px;bottom:115px;color:#000;font-size:20px;font-weight:300;left:50%;padding:5px;position:absolute;transform:translate(-50%);width:50%}.submit:hover{font-weight:600}.remove-monster{color:red;font-size:15px;left:100%;position:relative;transform:translateX(calc(-50% - 30px))}.attack-input-container{display:flex}.attack-input-container>div{width:25%}.option-button{align-self:center;text-align:center}.option-button button{border:1px solid #6a737b;border-radius:8px;font-size:15px;padding:5px 10px}.option-button button:hover{border:1px solid #000;color:#000}.update-option{display:flex;gap:5px}.saved-attack{margin-left:10px;margin-top:10px}.saved-attack .th{display:flex;flex-direction:row;justify-content:space-between;margin-bottom:5px;width:70%}.saved-attack .th>div{width:25%}.saved-attack .tb{display:flex;flex-direction:column;gap:5px;width:70%}.saved-attack .tb .colum{display:flex}.saved-attack .tb .colum>div{width:25%}.attack-hobodang{align-items:center;display:flex;font-size:20px;justify-content:center;margin-top:20px}.attack-hobodang>button,.attack-hobodang>input{font-size:30px;text-align:center}body{border:0;margin:0;padding:0}.intro{align-items:center;display:flex;flex:1 1;flex-direction:column;justify-content:center}.game-container,.intro{background-image:url(/BeatTheBeast/static/media/bg.c9e41ad4ab877358e33b.jpeg);height:100vh}.game-container{overflow:hidden}
+@import url(//fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
+@font-face {
+  font-family: ChosunCentennial;
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/ChosunCentennial.woff2)
+    format('woff2');
+}
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border: 0;
+  box-sizing: border-box;
+  font-family: ChosunCentennial, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+}
+body,
+button,
+h1,
+h2,
+h3,
+html,
+li,
+p,
+span,
+ul {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+button {
+  background: none;
+}
+button.default {
+  background: url(/BeatTheBeast/static/media/button.96660fb5b8ef955ce315.png)
+    no-repeat 50%;
+  background-size: 100% 100%;
+  border-radius: 8px;
+  color: #000;
+  font-size: 24px;
+  font-weight: 300;
+  height: 150px;
+  padding: 10px;
+  text-align: center;
+  width: 400px;
+}
+button.default:hover {
+  cursor: pointer;
+  font-weight: 600;
+}
+button.tertiary {
+  font-size: 20px;
+}
+button.tertiary:hover {
+  color: #000;
+}
+button.secondary {
+  font-size: 20px;
+}
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.winning-modal {
+  align-items: center;
+  background-color: #00000080;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 3;
+}
+.winning-modal-content {
+  position: relative;
+  width: 50%;
+}
+.winning-modal-content img {
+  width: 100%;
+}
+.winning-modal-close {
+  color: #fff;
+  cursor: pointer;
+  font-size: 50px;
+  position: absolute;
+  right: 0;
+}
+.nanumbrushscript {
+  font-family: Nanum Brush Script, cursive;
+}
+:root {
+  --wheel-font: 'Nanum Brush Script', 'Quicksand', sans-serif;
+  --wheel-size: 700px;
+  --wheel-slice-spacing: 50px;
+  --wheel-border-size: 5px;
+  --wheel-color: #f48457;
+  --neutral-color: #edf5f8;
+  --PI: 3.14159265358979;
+  --nb-item: 0;
+  --item-nb: 0;
+  --selected-item: 0;
+  --nb-turn: 5;
+  --counter: 1;
+  --spinning-duration: 4s;
+  --reset-duration: 0.25s;
+}
+.wheel-container {
+  background: url(/BeatTheBeast/static/media/wheel2.95cf3ea3869ec6e310f1.png)
+    no-repeat 50%;
+  background-size: 100% 100%;
+  border: 3px solid #465e73;
+  border-radius: 50%;
+  box-sizing: initial;
+  display: block;
+  height: 710px;
+  height: calc(var(--wheel-size) + var(--wheel-border-size) * 2);
+  margin: auto;
+  padding: 3px;
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 710px;
+  width: calc(var(--wheel-size) + var(--wheel-border-size) * 2);
+}
+.wheel-container:after,
+.wheel-container:before {
+  border: 20px solid #0000;
+  border-left-width: 0;
+  content: '';
+  display: block;
+  height: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  z-index: 2;
+}
+.wheel-container:before {
+  border-right-color: #465e73;
+  right: 0;
+}
+.wheel-container:after {
+  border-right-color: #edf5f8;
+  border-right-color: var(--neutral-color);
+  right: -5px;
+}
+.wheel {
+  background-size: 100% 100%;
+  border-radius: 50%;
+  box-sizing: initial;
+  cursor: pointer;
+  display: block;
+  height: 700px;
+  height: var(--wheel-size);
+  margin: 5px auto auto;
+  overflow: hidden;
+  position: relative;
+  transform: rotate(0deg);
+  transition: transform 0.25s;
+  transition: transform var(--reset-duration);
+  width: 700px;
+  width: var(--wheel-size);
+}
+.wheel.spinning {
+  transform: rotate(calc(5 * 1turn * 1 + (-1turn * 0 / 0)));
+  transform: rotate(
+    calc(
+      var(--nb-turn) * 1turn * var(--counter) + -1turn * var(--selected-item) /
+        var(--nb-item, 1)
+    )
+  );
+  transition: transform 4s;
+  transition: transform var(--spinning-duration);
+}
+.wheel:after {
+  background-color: #edf5f8;
+  background-color: var(--neutral-color);
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 25px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  z-index: 2;
+}
+.wheel-item {
+  color: #2a4546;
+  font-family: Nanum Brush Script, Quicksand, sans-serif;
+  font-family: var(--wheel-font);
+  font-size: 150px;
+  padding: 0 85px 0 50px;
+  text-align: right;
+  transform: translateY(-50%) rotate(calc(0 * (1turn / 0)));
+  transform: translateY(-50%)
+    rotate(calc(var(--item-nb) * (1turn / var(--nb-item, 1))));
+  transform-origin: center left;
+  width: 50%;
+}
+.wheel-item,
+.wheel-item:before {
+  box-sizing: border-box;
+  display: block;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+}
+.wheel-item:before {
+  --slice-max-width: calc(
+    var(--PI) * var(--wheel-size) + var(--wheel-size) / 2
+  );
+  --slice-width: calc(
+    var(--slice-max-width) / var(--nb-item) - var(--wheel-slice-spacing)
+  );
+  border: calc(var(--slice-width) / 2) solid #0000;
+  border-left: 6px solid #0000;
+  border-right: 350px solid #edf5f8;
+  border-right: solid var(--neutral-color) calc(var(--wheel-size) / 2);
+  content: ' ';
+  height: 0;
+  opacity: 1;
+  padding-left: 0;
+  transform: translate(-50%, -50%);
+  width: 0;
+  z-index: -1;
+}
+.attack-modal,
+.wheel-bg {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.attack-modal {
+  background: #00000080;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+.attack-modal-close {
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  height: 20px;
+  position: absolute;
+  right: 50px;
+  right: 0;
+}
+.attack-modal-content {
+  color: blue;
+  font-size: 200px;
+  font-weight: 600;
+  max-width: 70%;
+  position: relative;
+}
+.attack-modal-content p {
+  text-align: center;
+  word-break: break-all;
+}
+.monster-container {
+  padding-left: 10px;
+  position: relative;
+}
+.info {
+  border: 2px;
+  border-radius: 10px;
+  bottom: 5px;
+  flex-direction: column;
+  height: 100%;
+  overflow: scroll;
+  padding: 5px;
+  position: absolute;
+  right: 5px;
+  text-align: right;
+}
+.info,
+.info .name {
+  align-items: flex-end;
+  display: flex;
+  justify-content: flex-end;
+}
+.info .name {
+  font-size: 40px;
+  font-weight: 600;
+  gap: 10px;
+}
+.info .level {
+  font-size: 35px;
+  font-weight: 400;
+}
+.info .attack {
+  font-size: 30px;
+  font-weight: 400;
+}
+.info .attack-list-button button {
+  font-size: 25px;
+  text-align: right;
+}
+.img-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.img-container img {
+  height: 80vh;
+  max-width: 100%;
+  min-width: 500px;
+}
+.setting-btn img {
+  cursor: pointer;
+  width: 100%;
+}
+.setting-icon-container {
+  transform: translate(-20px, -3px);
+}
+.modal {
+  align-items: center;
+  background: #00000080;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+.modal-content {
+  background: url(/BeatTheBeast/static/media/settingBg.03d5be869497c2f7c623.png)
+    no-repeat 50%;
+  background-size: 100% 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 95%;
+  min-width: 500px;
+  padding: 105px 50px 165px;
+  position: relative;
+  width: 700px;
+}
+.modal-close {
+  cursor: pointer;
+  height: 20px;
+  position: absolute;
+  right: 50px;
+}
+.content-main-noti {
+  margin: 0 0 10px;
+}
+.content {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+button {
+  color: #6a737b;
+  cursor: pointer;
+}
+button:hover {
+  color: #000;
+}
+.menu {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-right: 15px;
+}
+.menu.monster .monster,
+.menu.player .player {
+  color: #000;
+}
+.menu button {
+  font-size: 22px;
+}
+.menu button:active,
+.menu button:hover {
+  color: #000;
+}
+.data-editor {
+  background-size: 100% 100%;
+  border-top: 1px solid #000;
+  flex-grow: 1;
+  margin-top: 15px;
+  overflow-y: scroll;
+  padding-top: 15px;
+}
+.local-monster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+}
+.local-monster button.selected {
+  color: #000;
+}
+.sub-menu {
+  display: flex;
+  justify-content: space-around;
+}
+.sub-menu.change .change,
+.sub-menu.create .create,
+.sub-menu.patch .patch {
+  color: #000;
+  font-weight: 600;
+}
+.monster-data-container {
+  height: 100%;
+}
+.require {
+  color: red;
+  margin-right: 2px;
+}
+section {
+  margin-top: 20px;
+}
+input {
+  background: none;
+  border-bottom: 1px solid #000;
+  font-size: 15px;
+}
+input:focus {
+  outline: none;
+}
+.input-field {
+  position: relative;
+}
+.input-field input:focus ~ span {
+  color: red;
+}
+.input-field {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  margin-left: 10px;
+  padding: 2px;
+}
+.submit {
+  align-items: flex-end;
+  border-radius: 8px;
+  bottom: 115px;
+  color: #000;
+  font-size: 20px;
+  font-weight: 300;
+  left: 50%;
+  padding: 5px;
+  position: absolute;
+  transform: translate(-50%);
+  width: 50%;
+}
+.submit:hover {
+  font-weight: 600;
+}
+.remove-monster {
+  color: red;
+  font-size: 15px;
+  left: 100%;
+  position: relative;
+  transform: translateX(calc(-50% - 30px));
+}
+.attack-input-container {
+  display: flex;
+}
+.attack-input-container > div {
+  width: 25%;
+}
+.option-button {
+  align-self: center;
+  text-align: center;
+}
+.option-button button {
+  border: 1px solid #6a737b;
+  border-radius: 8px;
+  font-size: 15px;
+  padding: 5px 10px;
+}
+.option-button button:hover {
+  border: 1px solid #000;
+  color: #000;
+}
+.update-option {
+  display: flex;
+  gap: 5px;
+}
+.saved-attack {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.saved-attack .th {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  width: 70%;
+}
+.saved-attack .th > div {
+  width: 25%;
+}
+.saved-attack .tb {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 70%;
+}
+.saved-attack .tb .colum {
+  display: flex;
+}
+.saved-attack .tb .colum > div {
+  width: 25%;
+}
+.attack-hobodang {
+  align-items: center;
+  display: flex;
+  font-size: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.attack-hobodang > button,
+.attack-hobodang > input {
+  font-size: 30px;
+  text-align: center;
+}
+body {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.intro {
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  justify-content: center;
+}
+.game-container,
+.intro {
+  background-image: url(/BeatTheBeast/static/media/bg.c9e41ad4ab877358e33b.jpeg);
+  height: 100vh;
+}
+.game-container {
+  overflow: hidden;
+}
 /*# sourceMappingURL=main.08a65ff0.css.map*/

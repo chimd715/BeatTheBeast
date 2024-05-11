@@ -3,11 +3,17 @@ import './index.css';
 
 const SPIN_TIMER = 2000;
 
-const Wheel = ({ items, selectedMonsterAttack, setSelectedMonsterAttack }) => {
+const Wheel = ({
+  items,
+  setMonsterState,
+  selectedMonsterAttack,
+  setSelectedMonsterAttack,
+}) => {
   const [counter, setCounter] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
+  const [monsterDamage, setMonsterDamage] = useState(0);
   const [selectedListModalVisible, setSelectedListModalVisible] =
     useState(false);
   const attackCountRef = useRef(0);
@@ -26,16 +32,18 @@ const Wheel = ({ items, selectedMonsterAttack, setSelectedMonsterAttack }) => {
   const handleCloseModal = () => {
     setSelectedListModalVisible(false);
     setSelectedList([]);
+
+    // Reset monster state when closing modal
+    setMonsterState('normal');
   };
 
   useEffect(() => {
     if (selectedMonsterAttack.num_of_attack > 0) {
       for (let i = 0; i < selectedMonsterAttack.num_of_attack; i++) {
-        setTimeout(() => {
-          selectItem();
-        }, i * SPIN_TIMER);
+        setTimeout(() => selectItem(), i * SPIN_TIMER);
         attackCountRef.current = i + 1;
       }
+      setMonsterDamage(selectedMonsterAttack.damage);
       setSelectedMonsterAttack({});
     } else {
       console.log(
@@ -88,6 +96,11 @@ const Wheel = ({ items, selectedMonsterAttack, setSelectedMonsterAttack }) => {
               x
             </span>
             <p>{selectedList.join(',')}</p>
+            <p className="attack-info">
+              {monsterDamage === 0
+                ? '안 아프지롱~'
+                : '피해량 -' + monsterDamage}
+            </p>
           </div>
         </div>
       )}
