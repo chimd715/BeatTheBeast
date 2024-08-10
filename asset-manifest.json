@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/BeatTheBeast/static/css/main.488244ad.css",
-    "main.js": "/BeatTheBeast/static/js/main.8d55f355.js",
+    "main.js": "/BeatTheBeast/static/js/main.b9b18306.js",
     "static/js/592.5c41bc80.chunk.js": "/BeatTheBeast/static/js/592.5c41bc80.chunk.js",
     "static/media/settingBg.png": "/BeatTheBeast/static/media/settingBg.03d5be869497c2f7c623.png",
     "static/media/win.png": "/BeatTheBeast/static/media/win.b84ab879b812409870c7.png",
@@ -10,11 +10,11 @@
     "static/media/bg.jpeg": "/BeatTheBeast/static/media/bg.c9e41ad4ab877358e33b.jpeg",
     "index.html": "/BeatTheBeast/index.html",
     "main.488244ad.css.map": "/BeatTheBeast/static/css/main.488244ad.css.map",
-    "main.8d55f355.js.map": "/BeatTheBeast/static/js/main.8d55f355.js.map",
+    "main.b9b18306.js.map": "/BeatTheBeast/static/js/main.b9b18306.js.map",
     "592.5c41bc80.chunk.js.map": "/BeatTheBeast/static/js/592.5c41bc80.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.488244ad.css",
-    "static/js/main.8d55f355.js"
+    "static/js/main.b9b18306.js"
   ]
 }
