@@ -231,7 +231,7 @@ const Monster = ({
 
     await postMonster(data);
     window.alert(
-      `괴물를 ${updateMode === 'create' ? '생성' : '수정'}하였습니다.`,
+      `괴물을 ${updateMode === 'create' ? '생성' : '수정'}하였습니다.`,
     );
     setUpdateMode('change');
   };

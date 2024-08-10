@@ -64,7 +64,7 @@ const App = () => {
         </div>
       ) : (
         <div className="intro">
-          <h1>괴물를 선택해주세요</h1>
+          <h1>괴물을 선택해주세요</h1>
           <GameSetting
             player={player}
             setPlayer={setPlayer}
