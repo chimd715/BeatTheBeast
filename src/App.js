@@ -1,11 +1,24 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import HealthBar from './components/healthBar/HealthBar'; // Assuming HealthBar component is in HealthBar.js
 import Wheel from './components/wheel'; // Assuming RouletteWheel component is in RouletteWheel.js
 import Monster from './components/monster';
 import GameSetting from './components/gameSetting';
 import MonsterAttack from './components/monsterAttack';
+import Landing from './components/landing';
+import HomeButton from './components/landing/HomeButton';
+import StudentStats from './components/studentStats';
+import Board from './components/board';
 import './App.css';
+
+// 화면 전환: 'landing' | 'battle' | 'stats' | 'board' (URL hash로 뒤로가기 지원)
+const VIEWS = ['battle', 'stats', 'board'];
+const getViewFromHash = () => {
+  const hash = window.location.hash.replace(/^#/, '');
+  return VIEWS.includes(hash) ? hash : 'landing';
+};
+
 const App = () => {
+  const [view, setView] = useState(getViewFromHash);
   const [selectedMonster, setSelectedMonster] = useState({});
   const [initialHealth, setInitialMonsterHealth] = useState(100);
   const [player, setPlayer] = useState(6);
@@ -14,6 +27,40 @@ const App = () => {
   const group = useMemo(() => {
     return Array.from({ length: player }, (_, index) => index + 1);
   }, [player]);
+
+  useEffect(() => {
+    const syncView = () => setView(getViewFromHash());
+    window.addEventListener('hashchange', syncView);
+    window.addEventListener('popstate', syncView);
+    return () => {
+      window.removeEventListener('hashchange', syncView);
+      window.removeEventListener('popstate', syncView);
+    };
+  }, []);
+
+  const navigate = useCallback((nextView) => {
+    if (nextView === 'landing') {
+      const { pathname, search } = window.location;
+      window.history.pushState(null, '', pathname + search);
+    } else {
+      window.location.hash = nextView;
+    }
+    setView(VIEWS.includes(nextView) ? nextView : 'landing');
+  }, []);
+
+  const goHome = useCallback(() => navigate('landing'), [navigate]);
+
+  if (view === 'stats') {
+    return <StudentStats onHome={goHome} />;
+  }
+
+  if (view === 'board') {
+    return <Board onHome={goHome} />;
+  }
+
+  if (view !== 'battle') {
+    return <Landing onNavigate={navigate} />;
+  }
 
   return (
     <>
@@ -27,6 +74,7 @@ const App = () => {
               marginBottom: 10,
             }}
           >
+            <HomeButton onClick={goHome} />
             <HealthBar
               health={selectedMonster.health}
               initialHealth={initialHealth}
@@ -64,6 +112,7 @@ const App = () => {
         </div>
       ) : (
         <div className="intro">
+          <HomeButton onClick={goHome} floating />
           <h1>괴물을 선택해주세요</h1>
           <GameSetting
             player={player}
