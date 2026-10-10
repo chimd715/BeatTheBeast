@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { DEFAULT_MONSTER_IMG } from '../../monsterImages';
 import './index.css';
 
 const Monster = ({
@@ -9,30 +10,48 @@ const Monster = ({
 }) => {
   const { level = 3, name = 'puppy', images, attacks } = selectedMonster;
 
+  // 불러오지 못한 이미지 주소. 다음 후보 이미지로 넘어갈 때 사용한다.
+  const [brokenImages, setBrokenImages] = useState([]);
+
   const image = useMemo(() => {
+    let stateImage;
     switch (monsterState) {
       default:
       case 'normal':
-        return images?.normalImg;
+        stateImage = images?.normalImg;
+        break;
       case 'rage':
-        return images?.rageImg;
+        stateImage = images?.rageImg;
+        break;
       case 'hit':
-        return images?.hitImg;
+        stateImage = images?.hitImg;
+        break;
       case 'attack':
-        return images?.attackImg;
+        stateImage = images?.attackImg;
+        break;
     }
-  }, [images, monsterState]);
+    // 상태 이미지 → 기본 이미지 → 기본 괴물 이미지 순으로 사용
+    const candidates = [stateImage, images?.normalImg].filter(
+      (src) => src && !brokenImages.includes(src),
+    );
+    return candidates[0] || DEFAULT_MONSTER_IMG;
+  }, [images, monsterState, brokenImages]);
+
+  const handleImageError = () => {
+    // 기본 괴물 이미지까지 실패하면 더 바꾸지 않는다. (onError 무한 반복 방지)
+    if (image === DEFAULT_MONSTER_IMG) return;
+    setBrokenImages((prev) => (prev.includes(image) ? prev : [...prev, image]));
+  };
 
   const handleAttack = (attack) => {
     setMonsterState('attack');
     setSelectedMonsterAttack(attack);
   };
 
-  console.log(attacks);
   return (
     <div className="monster-container">
       <div className="img-container">
-        <img src={image} alt="괴물" />
+        <img src={image} alt="괴물" onError={handleImageError} />
       </div>
       <div className="info">
         <p className="name">
