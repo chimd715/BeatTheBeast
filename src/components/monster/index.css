@@ -52,3 +52,63 @@
   min-width: 500px;
   height: 80vh;
 }
+
+/* 공격/방어 기술 구분 표시 */
+.info .attack-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+.info .attack-legend .legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 22px;
+  font-weight: 600;
+}
+.info .attack-legend .legend-dot {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 2px #fff;
+}
+.info .skill-attack {
+  color: #a4161a;
+}
+.info .skill-defense {
+  color: #0b5394;
+}
+.info .attack-list-button button.skill-attack,
+.info .attack-list-button button.skill-defense {
+  cursor: pointer;
+  font-weight: 600;
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
+    1px 1px 0 #fff, 0 0 6px rgba(255, 255, 255, 0.9);
+}
+.info .attack-list-button button.skill-attack:hover,
+.info .attack-list-button button.skill-defense:hover {
+  text-decoration: underline;
+}
+.info .attack-list-button .skill-badge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  font-size: 16px;
+  vertical-align: middle;
+  color: #fff;
+  text-shadow: none;
+}
+.info .attack-list-button .skill-attack .skill-badge {
+  background: #a4161a;
+}
+.info .attack-list-button .skill-defense .skill-badge {
+  background: #0b5394;
+}
+.info .attack-list-button .skill-detail {
+  font-size: 18px;
+}

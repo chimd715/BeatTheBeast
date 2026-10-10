@@ -2,9 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './index.css';
 
 import win from '../../img/win.png';
+import { SETTING_KEYS, useSetting } from '../../settings';
 
 const HealthBar = ({ health, initialHealth, setMonsterState }) => {
   const [winningModalVisible, setWinningModalVisible] = useState(false);
+  const [showHealthNumber] = useSetting(SETTING_KEYS.SHOW_HEALTH_NUMBER, true);
   const remainHealth = (health / initialHealth) * 100;
   const displayHealth = health < 0 ? 0 : Math.floor(health);
   const barStyle = {
@@ -65,9 +67,11 @@ const HealthBar = ({ health, initialHealth, setMonsterState }) => {
           }}
         ></div>
       </div>
-      <span style={{ verticalAlign: 'top', margin: '10px', fontSize: 30 }}>
-        {displayHealth} / {initialHealth}
-      </span>
+      {showHealthNumber && (
+        <span style={{ verticalAlign: 'top', margin: '10px', fontSize: 30 }}>
+          {displayHealth} / {initialHealth}
+        </span>
+      )}
       {winningModalVisible && (
         <div className="winning-modal">
           <div className="winning-modal-content">
