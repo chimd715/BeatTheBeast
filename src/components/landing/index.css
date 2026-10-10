@@ -1,0 +1,110 @@
+/* 메인 랜딩 페이지 */
+.landing {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 20px 180px;
+  background-image: url(../../img/bg.jpeg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  box-sizing: border-box;
+}
+
+.landing-header {
+  text-align: center;
+}
+
+.landing-title {
+  font-size: 120px;
+  font-weight: 700;
+  letter-spacing: 12px;
+  line-height: 1.1;
+  color: #000;
+}
+
+.landing-subtitle {
+  margin-top: 12px;
+  font-size: 32px;
+  color: #333;
+}
+
+.landing-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.landing-menu button.default {
+  width: 300px;
+  height: 120px;
+  font-size: 36px;
+}
+
+.landing-credit {
+  position: absolute;
+  left: 20px;
+  bottom: 16px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.landing-logo {
+  position: absolute;
+  right: 20px;
+  bottom: 16px;
+  width: 140px;
+  height: 140px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 처음으로 버튼 (전투/능력치/게시판 화면 공용) */
+.home-btn {
+  flex-shrink: 0;
+  margin: 10px;
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  font-size: 18px;
+  color: #000;
+  cursor: pointer;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.home-btn--floating {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  margin: 0;
+  z-index: 10;
+}
+
+/* 준비 중 화면 (능력치/게시판 임시) */
+.placeholder-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-image: url(../../img/bg.jpeg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.placeholder-page h1 {
+  font-size: 56px;
+}
+
+.placeholder-page p {
+  font-size: 24px;
+  color: #333;
+}
