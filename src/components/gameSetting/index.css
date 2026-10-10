@@ -237,3 +237,36 @@ select {
 .saved-attack .tb .colum > div {
   width: 25%;
 }
+
+/* howto (사용방법) */
+.menu.howto .howto {
+  color: #000;
+}
+
+.howto-container {
+  margin: 0 10px;
+  padding-bottom: 20px;
+  color: #000;
+}
+
+.howto-section {
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+
+.howto-title {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.howto-body {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 2px solid rgba(0, 0, 0, 0.35);
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
