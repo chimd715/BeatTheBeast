@@ -7,7 +7,8 @@
 }
 .modal {
   z-index: 100;
-  position: absolute;
+  /* 스크롤된 상태에서도 화면을 덮도록 fixed, 화면보다 크면 모달 자체를 스크롤 */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -15,16 +16,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
   background: rgba(0, 0, 0, 0.5);
 }
 
+/*
+  양피지 배경(위/아래 두루마리)에 맞춘 여백.
+  1080px 화면(높이 95vh ≈ 1026px)에서 기존 값(105px / 165px / submit 115px)과 같고,
+  작은 화면에서는 높이에 비례해 줄어든다.
+*/
 .modal-content {
-  width: 700px;
-  min-width: 500px;
+  --submit-bottom: clamp(50px, 10.6vh, 115px);
+  width: min(700px, calc(100% - 16px));
   height: 95%;
+  min-height: 460px;
+  /* 화면보다 클 때도 위쪽이 잘리지 않도록 auto margin으로 가운데 정렬 */
+  margin: auto;
   border-radius: 10px;
   box-sizing: border-box;
-  padding: 105px 50px 165px;
+  padding: clamp(50px, 9.7vh, 105px) clamp(20px, 7vw, 50px)
+    calc(var(--submit-bottom) + 50px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -167,7 +178,7 @@ select {
   padding: 5px;
   width: 50%;
   position: absolute;
-  bottom: 115px;
+  bottom: var(--submit-bottom);
   left: 50%;
   transform: translate(-50%);
 }

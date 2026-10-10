@@ -1,6 +1,7 @@
 /* winning */
 .winning-modal {
-  position: absolute;
+  /* 스크롤된 상태에서도 화면 전체를 덮도록 fixed */
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
