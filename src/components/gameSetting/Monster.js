@@ -62,6 +62,12 @@ const Monster = ({
   const [imagePreview, setImagePreview] = useState({});
 
   const savedAttackFieldsRef = useRef();
+  // 수정 대상 괴물이나 모드가 바뀔 때마다 올라간다. (이미지 변환 중 대상이 바뀌었는지 확인용)
+  const formVersionRef = useRef(0);
+
+  useEffect(() => {
+    formVersionRef.current += 1;
+  }, [patchMonster, updateMode]);
 
   // 렌더링마다 새로 만들어지지 않도록 한 번만 생성한다.
   const [attackRefs] = useState(() =>
@@ -238,8 +244,11 @@ const Monster = ({
     // 같은 파일을 다시 골라도 onChange 가 동작하도록 비운다.
     input.value = '';
     if (!file) return;
+    const formVersion = formVersionRef.current;
     try {
       const dataUrl = await fileToResizedDataURL(file);
+      // 변환하는 동안 다른 괴물로 바뀌었으면 그 괴물의 입력칸에 넣지 않는다.
+      if (formVersion !== formVersionRef.current) return;
       setImageValue(fieldName, dataUrl);
     } catch (err) {
       window.alert(err?.message || '이미지를 불러오지 못했습니다.');
@@ -307,7 +316,8 @@ const Monster = ({
       '정말 삭제하시겠습니까? 삭제한 괴물은 다시 불러올 수 없습니다.',
     );
     if (!result) return false;
-    await deleteMonster(patchMonster.id);
+    const remainMonsters = await deleteMonster(patchMonster.id);
+    if (!remainMonsters) return;
     window.alert('삭제되었습니다.');
     await handleChangeMonster('remove');
   };

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DEFAULT_MONSTER_IMG } from '../../monsterImages';
 import './index.css';
 
@@ -12,6 +12,11 @@ const Monster = ({
 
   // 불러오지 못한 이미지 주소. 다음 후보 이미지로 넘어갈 때 사용한다.
   const [brokenImages, setBrokenImages] = useState([]);
+
+  // 괴물을 (다시) 고르면 images 가 새 객체가 되므로 실패 기록을 비우고 다시 시도한다.
+  useEffect(() => {
+    setBrokenImages([]);
+  }, [images]);
 
   const image = useMemo(() => {
     let stateImage;

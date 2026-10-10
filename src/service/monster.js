@@ -7,6 +7,8 @@ const STORAGE_KEY = 'monsters';
 
 export const QUOTA_EXCEEDED_MESSAGE =
   '저장 공간이 부족합니다. 더 작은 이미지를 사용하거나 다른 괴물을 삭제해주세요.';
+export const SAVE_FAILED_MESSAGE =
+  '저장하지 못했습니다. 브라우저의 사이트 데이터(저장소) 설정을 확인해주세요.';
 
 // 누구나 볼 수 있는 기본 제공 괴물. localStorage 에 저장되지 않으며 수정·삭제할 수 없다.
 export const DEFAULT_MONSTERS = [
@@ -89,7 +91,7 @@ function isQuotaExceededError(err) {
 }
 
 /**
- * 괴물 목록을 저장한다. 저장 공간이 부족하면 안내 후 false 를 반환한다.
+ * 괴물 목록을 저장한다. 저장하지 못하면 안내 후 false 를 반환한다.
  * @param {Array} monsters
  * @returns {boolean}
  */
@@ -98,11 +100,10 @@ function saveLocalMonsters(monsters) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(monsters));
     return true;
   } catch (err) {
-    if (isQuotaExceededError(err)) {
-      window.alert(QUOTA_EXCEEDED_MESSAGE);
-      return false;
-    }
-    throw err;
+    window.alert(
+      isQuotaExceededError(err) ? QUOTA_EXCEEDED_MESSAGE : SAVE_FAILED_MESSAGE,
+    );
+    return false;
   }
 }
 
@@ -181,7 +182,7 @@ export async function deleteMonster(id) {
   const monsters = getLocalMonsters();
   if (isDefaultMonster(id)) return monsters;
   const remainMonsters = monsters.filter((monster) => monster.id !== id);
-  saveLocalMonsters(remainMonsters);
+  if (!saveLocalMonsters(remainMonsters)) return null;
   return remainMonsters;
 
   // try {

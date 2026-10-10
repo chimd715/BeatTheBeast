@@ -3,7 +3,7 @@ import { formatDate } from '../../service/board';
 
 const BoardDetail = ({ post, onEdit, onDelete, onBack, saveError }) => {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
-  const edited = formatDate(post.updatedAt) !== formatDate(post.createdAt);
+  const edited = post.updatedAt !== post.createdAt;
 
   return (
     <article className="board-detail">

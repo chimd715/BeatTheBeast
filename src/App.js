@@ -50,6 +50,14 @@ const App = () => {
 
   const goHome = useCallback(() => navigate('landing'), [navigate]);
 
+  // 전투 화면을 벗어나면 룰렛 결과창·피격 타이머가 사라지므로,
+  // 괴물이 공격/피격 이미지에 멈추지 않도록 체력에 맞는 상태로 되돌린다.
+  useEffect(() => {
+    if (view === 'battle') return;
+    const remainHealth = (selectedMonster.health / initialHealth) * 100;
+    setMonsterState(remainHealth < 30 ? 'rage' : 'normal');
+  }, [view, selectedMonster.health, initialHealth]);
+
   if (view === 'stats') {
     return <StudentStats onHome={goHome} />;
   }
