@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { getGroupTotals, useStudents } from '../../service/students';
 import './index.css';
 
 const DAMAGE_POPUP_DURATION = 1500;
@@ -14,6 +15,12 @@ const MonsterAttack = ({
   const popupIdRef = useRef(0);
   const [damagePopups, setDamagePopups] = useState([]);
   const [message, setMessage] = useState('');
+  const [students] = useStudents();
+  const groupTotals = getGroupTotals(students);
+  const groupAttacks = Object.keys(groupTotals)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .filter((group) => groupTotals[group].ji > 0);
 
   useEffect(() => {
     const timers = timersRef.current;
@@ -40,6 +47,22 @@ const MonsterAttack = ({
     }, DAMAGE_POPUP_DURATION);
   };
 
+  // 괴물에게 피해를 준다 (직접 입력 / 모둠 공격 버튼 공용)
+  const attack = (damage) => {
+    setMonsterState('hit');
+    setMonster((prev) => {
+      return { ...prev, health: prev.health - damage };
+    });
+    showDamage(damage);
+
+    // Reset monster state after 1 second
+    const current_health = health - damage;
+    const remainHealth = (current_health / initialHealth) * 100;
+    addTimer(() => {
+      remainHealth < 30 ? setMonsterState('rage') : setMonsterState('normal');
+    }, 1000);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const rawValue = inputRef.current.value.trim();
@@ -54,18 +77,14 @@ const MonsterAttack = ({
     inputRef.current.value = '';
     inputRef.current.focus();
 
-    setMonsterState('hit');
-    setMonster((prev) => {
-      return { ...prev, health: prev.health - damage };
-    });
-    showDamage(damage);
+    attack(damage);
+  };
 
-    // Reset monster state after 1 second
-    const current_health = health - damage;
-    const remainHealth = (current_health / initialHealth) * 100;
-    addTimer(() => {
-      remainHealth < 30 ? setMonsterState('rage') : setMonsterState('normal');
-    }, 1000);
+  const handleGroupAttack = (group) => {
+    const damage = groupTotals[group]?.ji ?? 0;
+    if (damage <= 0) return;
+    setMessage('');
+    attack(damage);
   };
 
   return (
@@ -81,6 +100,20 @@ const MonsterAttack = ({
         />
         <button type="submit">호보당 공격</button>
       </form>
+      {groupAttacks.length > 0 && (
+        <div className="attack-hobodang-groups">
+          {groupAttacks.map((group) => (
+            <button
+              key={group}
+              type="button"
+              className="attack-hobodang-group-btn"
+              onClick={() => handleGroupAttack(group)}
+            >
+              {group}모둠 공격 (지 {groupTotals[group].ji})
+            </button>
+          ))}
+        </div>
+      )}
       {message && <p className="attack-hobodang-message">{message}</p>}
       <div className="damage-popup-layer" aria-live="polite">
         {damagePopups.map((popup) => (

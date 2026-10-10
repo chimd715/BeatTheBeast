@@ -1,5 +1,18 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { getGroupTotals, useStudents } from '../../service/students';
 import './index.css';
+
+// 뽑힌 모둠별로 덕(방어) 합계를 뺀 피해량: [{ group, hits, defense, damage }]
+const getGroupDamages = (selectedList, damage, groupTotals) => {
+  const hitsByGroup = new Map();
+  selectedList.forEach((group) => {
+    hitsByGroup.set(group, (hitsByGroup.get(group) || 0) + 1);
+  });
+  return Array.from(hitsByGroup.entries()).map(([group, hits]) => {
+    const defense = groupTotals[group]?.deok ?? 0;
+    return { group, hits, defense, damage: Math.max(0, damage - defense) };
+  });
+};
 
 const SPIN_TIMER = 2000;
 
@@ -17,6 +30,7 @@ const Wheel = ({
   const [selectedListModalVisible, setSelectedListModalVisible] =
     useState(false);
   const attackCountRef = useRef(0);
+  const [students] = useStudents();
 
   const selectItem = useCallback(() => {
     const selectedItemIndex = Math.floor(Math.random() * items.length);
@@ -101,6 +115,23 @@ const Wheel = ({
                 ? '안 아프지롱~'
                 : '피해량 -' + monsterDamage}
             </p>
+            {monsterDamage > 0 && students.length > 0 && (
+              <ul className="attack-group-damage">
+                {getGroupDamages(
+                  selectedList,
+                  monsterDamage,
+                  getGroupTotals(students)
+                ).map(({ group, hits, defense, damage }) => (
+                  <li key={group}>
+                    {group}모둠: 피해 {damage}
+                    {hits > 1 && ` × ${hits}번`}
+                    <span className="attack-group-damage-defense">
+                      {` (덕 방어 ${defense} 적용)`}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       )}
