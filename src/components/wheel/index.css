@@ -207,3 +207,24 @@
   position: relative;
   max-width: 100%;
 }
+
+/* 뽑힌 모둠별 피해량 (덕 합계만큼 방어 적용) */
+.attack-modal-content ul.attack-group-damage {
+  margin: 16px auto 0;
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: rgba(255, 251, 242, 0.92);
+  list-style: none;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  color: #1f4e8c;
+  -webkit-text-stroke: 0;
+}
+
+.attack-group-damage-defense {
+  font-size: 28px;
+  font-weight: 400;
+  color: #333;
+}
