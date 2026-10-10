@@ -11,12 +11,13 @@
   text-align: right;
   border: 2px;
   text-align: right;
-  height: 100%;
-  overflow: scroll;
+  /* height: 100% + justify-content: flex-end 대신 max-height:
+     내용이 넘쳐도 위쪽 공격기 목록까지 스크롤할 수 있다 */
+  max-height: 100%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: flex-end;
 }
 
 .info .name {
@@ -48,9 +49,18 @@
 }
 
 .img-container img {
+  display: block;
+  width: 100%;
+  height: auto;
   max-width: 100%;
-  min-width: 500px;
-  height: 80vh;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  .img-container img {
+    max-height: 60vh;
+  }
 }
 
 /* 공격/방어 기술 구분 표시 */

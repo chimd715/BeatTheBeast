@@ -49,6 +49,7 @@ button.default {
   font-weight: 300;
   font-size: 24px;
   width: 400px;
+  max-width: 100%;
   height: 150px;
   background: url(./img/button.png) no-repeat center;
   background-size: 100% 100%;
@@ -75,5 +76,14 @@ button.secondary {
 
 .main-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, 1fr): 내용물(이미지 등)이 커도 칸이 화면 밖으로 넘치지 않도록 */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* 좁은 화면에서는 괴물 / 룰렛을 위아래로 쌓는다 */
+@media (max-width: 900px) {
+  .main-container {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 20px;
+  }
 }

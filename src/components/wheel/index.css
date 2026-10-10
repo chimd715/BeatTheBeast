@@ -5,8 +5,10 @@
 }
 :root {
   --wheel-font: 'Nanum Brush Script', 'Quicksand', sans-serif;
-  --wheel-size: 700px;
-  --wheel-slice-spacing: 50px;
+  /* 큰 화면에서는 700px, 작은 화면에서는 화면 크기에 맞춰 줄어든다 */
+  --wheel-size: min(700px, 42vw, 75vh);
+  /* 700px 기준 50px → 룰렛 크기에 비례 */
+  --wheel-slice-spacing: calc(var(--wheel-size) / 14);
   --wheel-border-size: 5px;
   --wheel-color: #f48457;
   --neutral-color: #edf5f8;
@@ -18,6 +20,13 @@
   --counter: 1;
   --spinning-duration: 4s;
   --reset-duration: 0.25s;
+}
+
+/* 좁은 화면(한 줄 배치)에서는 가로 폭을 더 쓸 수 있다 */
+@media (max-width: 900px) {
+  :root {
+    --wheel-size: min(700px, 85vw, 75vh);
+  }
 }
 
 /* Conteneur de la roue = cercle rose extérieur */
@@ -108,7 +117,8 @@
   display: block;
   position: absolute;
   box-sizing: border-box;
-  font-size: 150px;
+  /* 700px 기준 150px → 룰렛 크기에 비례 */
+  font-size: calc(var(--wheel-size) * 3 / 14);
   /* position de l'item */
   top: 50%;
   left: 50%;
@@ -120,7 +130,8 @@
   /* texte */
   color: #2a4546;
   text-align: right;
-  padding: 0 85px 0 50px;
+  /* 700px 기준 0 85px 0 50px → 룰렛 크기에 비례 */
+  padding: 0 calc(var(--wheel-size) * 85 / 700) 0 calc(var(--wheel-size) / 14);
   font-family: var(--wheel-font);
 }
 
@@ -166,7 +177,8 @@
 
 .attack-modal {
   z-index: 100;
-  position: absolute;
+  /* 스크롤된 상태에서도 화면 전체를 덮도록 fixed */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -189,7 +201,7 @@
 .attack-modal-content {
   -webkit-text-stroke: 1px white;
 
-  font-size: 200px;
+  font-size: min(200px, 19vmin);
   font-weight: 600;
   color: blue;
   position: relative;
@@ -201,7 +213,7 @@
 }
 
 .attack-modal-content p.attack-info {
-  font-size: 100px;
+  font-size: min(100px, 9.5vmin);
   font-weight: 200;
   color: red;
   position: relative;
