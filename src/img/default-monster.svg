@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" width="400" height="460">
+  <title>꼬마 도깨비</title>
+  <ellipse cx="200" cy="440" rx="120" ry="14" fill="#000" opacity=".15"/>
+  <g stroke="#2c4f2e" stroke-width="6" stroke-linejoin="round">
+    <path d="M150 150 L128 70 L188 135 Z" fill="#f6d55c"/>
+    <path d="M250 150 L272 70 L212 135 Z" fill="#f6d55c"/>
+    <ellipse cx="150" cy="418" rx="42" ry="22" fill="#4f9a55"/>
+    <ellipse cx="250" cy="418" rx="42" ry="22" fill="#4f9a55"/>
+    <ellipse cx="72" cy="300" rx="28" ry="40" transform="rotate(25 72 300)" fill="#6cc070"/>
+    <ellipse cx="328" cy="300" rx="28" ry="40" transform="rotate(-25 328 300)" fill="#6cc070"/>
+    <path d="M200 130 C300 130 345 220 340 310 C335 390 280 420 200 420 C120 420 65 390 60 310 C55 220 100 130 200 130 Z" fill="#6cc070"/>
+  </g>
+  <ellipse cx="200" cy="345" rx="85" ry="62" fill="#c4e8a8"/>
+  <path d="M75 360 Q200 400 325 360 L318 395 Q200 432 82 395 Z" fill="#f2a93b" stroke="#2c4f2e" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M120 378 l8 24 M170 388 l4 26 M230 388 l-4 26 M280 378 l-8 24" stroke="#3d3d3d" stroke-width="6" stroke-linecap="round"/>
+  <g stroke="#2c4f2e" stroke-width="5">
+    <ellipse cx="160" cy="235" rx="30" ry="34" fill="#fff"/>
+    <ellipse cx="240" cy="235" rx="30" ry="34" fill="#fff"/>
+  </g>
+  <circle cx="166" cy="242" r="14" fill="#2b2b2b"/>
+  <circle cx="246" cy="242" r="14" fill="#2b2b2b"/>
+  <circle cx="171" cy="236" r="5" fill="#fff"/>
+  <circle cx="251" cy="236" r="5" fill="#fff"/>
+  <ellipse cx="118" cy="285" rx="18" ry="10" fill="#ff8fa3" opacity=".7"/>
+  <ellipse cx="282" cy="285" rx="18" ry="10" fill="#ff8fa3" opacity=".7"/>
+  <path d="M165 290 Q200 325 235 290" fill="none" stroke="#2c4f2e" stroke-width="6" stroke-linecap="round"/>
+  <path d="M180 299 L187 314 L195 304 Z" fill="#fff" stroke="#2c4f2e" stroke-width="3" stroke-linejoin="round"/>
+</svg>
