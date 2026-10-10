@@ -1,0 +1,292 @@
+/* 게시판(공지글) - TV/프로젝터에서도 읽기 쉽도록 큰 글씨 */
+.board-page {
+  min-height: 100vh;
+  padding: 70px 24px 40px;
+  background-image: url(../../img/bg.jpeg);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.board-panel {
+  width: min(1200px, 100%);
+  padding: clamp(20px, 3vw, 48px);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  background: rgba(250, 245, 235, 0.88);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  color: #000;
+}
+
+.board-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #000;
+}
+
+.board-heading {
+  font-size: clamp(36px, 3.4vw, 64px);
+  letter-spacing: 4px;
+}
+
+/* 버튼 */
+.board-btn {
+  min-width: 110px;
+  padding: 10px 24px;
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: clamp(20px, 1.5vw, 28px);
+  color: #000;
+  cursor: pointer;
+}
+
+.board-btn:hover {
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+}
+
+.board-btn:focus-visible,
+.board-item:focus-visible,
+.board-input:focus,
+.board-check input:focus-visible {
+  outline: 3px solid rgba(199, 62, 58, 0.6);
+  outline-offset: 2px;
+}
+
+.board-btn--primary {
+  border-color: #2b2118;
+  background: #2b2118;
+  color: #f5f0e8;
+}
+
+.board-btn--primary:hover {
+  background: #000;
+  color: #fff;
+}
+
+.board-btn--danger {
+  border-color: #a42a24;
+  color: #a42a24;
+}
+
+.board-btn--danger:hover {
+  background: #c73e3a;
+  color: #fff;
+}
+
+.board-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.board-actions--split {
+  justify-content: space-between;
+}
+
+.board-actions--end {
+  justify-content: flex-end;
+}
+
+/* 안내/오류 문구 */
+.board-message {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-left: 5px solid #c73e3a;
+  background: rgba(199, 62, 58, 0.1);
+  font-size: clamp(18px, 1.3vw, 24px);
+  color: #8c231e;
+}
+
+.board-muted {
+  color: #777;
+}
+
+/* 목록 */
+.board-list {
+  list-style: none;
+}
+
+.board-list li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.board-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(14px, 1.4vw, 24px) 12px;
+  font-size: clamp(22px, 1.9vw, 36px);
+  text-align: left;
+  color: #000;
+  cursor: pointer;
+}
+
+.board-item:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: #000;
+}
+
+.board-item--pinned {
+  background: rgba(199, 62, 58, 0.07);
+}
+
+.board-item-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-item-date {
+  flex-shrink: 0;
+  font-size: 0.7em;
+  color: #555;
+}
+
+.board-badge {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: #c73e3a;
+  font-size: clamp(16px, 1.2vw, 24px);
+  font-weight: 600;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.board-empty {
+  padding: clamp(40px, 6vw, 100px) 12px;
+  text-align: center;
+  font-size: clamp(24px, 2vw, 36px);
+}
+
+.board-empty-sub {
+  margin-top: 12px;
+  font-size: 0.7em;
+  color: #555;
+}
+
+.board-note {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+}
+
+/* 상세 */
+.board-detail-head {
+  padding-bottom: 16px;
+  border-bottom: 2px solid #000;
+}
+
+.board-detail-title {
+  margin-top: 8px;
+  font-size: clamp(34px, 3.4vw, 64px);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.board-detail-date {
+  margin-top: 8px;
+  font-size: clamp(16px, 1.2vw, 22px);
+  color: #555;
+}
+
+.board-detail-body {
+  padding: clamp(20px, 2.4vw, 40px) 0;
+  font-size: clamp(24px, 2.2vw, 42px);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.board-detail .board-actions--split {
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.board-confirm {
+  margin-top: 8px;
+  padding: 20px;
+  border: 2px solid #c73e3a;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.board-confirm p {
+  margin-bottom: 16px;
+  font-size: clamp(20px, 1.6vw, 30px);
+}
+
+/* 작성/수정 */
+.board-form .board-heading {
+  padding-bottom: 16px;
+  border-bottom: 2px solid #000;
+}
+
+.board-field {
+  display: block;
+  margin-top: 20px;
+}
+
+.board-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: clamp(20px, 1.5vw, 28px);
+  font-weight: 600;
+}
+
+.board-input {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: clamp(20px, 1.8vw, 32px);
+  color: #000;
+}
+
+.board-input[aria-invalid='true'] {
+  border-color: #c73e3a;
+}
+
+.board-textarea {
+  min-height: clamp(200px, 38vh, 460px);
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.board-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: clamp(20px, 1.5vw, 28px);
+  cursor: pointer;
+}
+
+.board-check input {
+  width: 26px;
+  height: 26px;
+  accent-color: #c73e3a;
+  cursor: pointer;
+}
+
+.board-form .board-actions {
+  margin-top: 24px;
+}
