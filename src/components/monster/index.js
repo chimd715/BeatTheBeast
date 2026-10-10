@@ -38,21 +38,40 @@ const Monster = ({
         <p className="name">
           <p>{name}</p>
         </p>
-        <p className="attack">공격/방어기</p>
+        <div className="attack attack-legend">
+          <span>공격/방어기</span>
+          <span className="legend-item skill-attack">
+            <span className="legend-dot" />
+            공격
+          </span>
+          <span className="legend-item skill-defense">
+            <span className="legend-dot" />
+            방어
+          </span>
+        </div>
         <div className="attack-list-button">
           {attacks &&
-            attacks.map((attack) => (
-              <div>
-                <button key={attack.name} onClick={() => handleAttack(attack)}>
-                  {attack.name}{' '}
-                  <span style={{ fontSize: 18 }}>
-                    ({attack.num_of_attack}회{' '}
-                    {attack.damage === 0 ? '방어' : '공격'} / 피해치{' '}
-                    {attack.damage})
-                  </span>
-                </button>
-              </div>
-            ))}
+            attacks.map((attack, index) => {
+              const isDefense = Number(attack.damage) === 0;
+              return (
+                <div key={`${attack.name}-${index}`}>
+                  <button
+                    className={isDefense ? 'skill-defense' : 'skill-attack'}
+                    onClick={() => handleAttack(attack)}
+                  >
+                    <span className="skill-badge">
+                      {isDefense ? '방어' : '공격'}
+                    </span>
+                    {attack.name}{' '}
+                    <span className="skill-detail">
+                      {isDefense
+                        ? `(${attack.num_of_attack}회 방어)`
+                        : `(${attack.num_of_attack}회 공격 - 피해치 ${attack.damage})`}
+                    </span>
+                  </button>
+                </div>
+              );
+            })}
         </div>
       </div>
       {selectedMonster.health <= 0 && (
