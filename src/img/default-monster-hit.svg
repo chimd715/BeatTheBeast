@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" width="400" height="460">
+  <title>꼬마 도깨비 (피해)</title>
+  <defs>
+    <polygon id="star" points="0,-16 4.1,-5.7 15.2,-4.9 6.7,2.2 9.4,12.9 0,7 -9.4,12.9 -6.7,2.2 -15.2,-4.9 -4.1,-5.7" fill="#f6d55c" stroke="#b8860b" stroke-width="2" stroke-linejoin="round"/>
+  </defs>
+  <ellipse cx="200" cy="440" rx="120" ry="14" fill="#000" opacity=".15"/>
+  <g transform="rotate(-8 200 300)">
+    <g stroke="#2c4f2e" stroke-width="6" stroke-linejoin="round">
+      <path d="M150 150 L128 70 L188 135 Z" fill="#f6d55c"/>
+      <path d="M250 150 L272 70 L212 135 Z" fill="#f6d55c"/>
+      <ellipse cx="150" cy="418" rx="42" ry="22" fill="#6aa86e"/>
+      <ellipse cx="250" cy="418" rx="42" ry="22" fill="#6aa86e"/>
+      <ellipse cx="74" cy="320" rx="28" ry="40" transform="rotate(10 74 320)" fill="#8fcf8a"/>
+      <ellipse cx="326" cy="320" rx="28" ry="40" transform="rotate(-10 326 320)" fill="#8fcf8a"/>
+      <path d="M200 130 C300 130 345 220 340 310 C335 390 280 420 200 420 C120 420 65 390 60 310 C55 220 100 130 200 130 Z" fill="#8fcf8a"/>
+    </g>
+    <ellipse cx="200" cy="345" rx="85" ry="62" fill="#d3eebd"/>
+    <path d="M75 360 Q200 400 325 360 L318 395 Q200 432 82 395 Z" fill="#f2a93b" stroke="#2c4f2e" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M120 378 l8 24 M170 388 l4 26 M230 388 l-4 26 M280 378 l-8 24" stroke="#3d3d3d" stroke-width="6" stroke-linecap="round"/>
+    <path d="M140 215 l40 40 M180 215 l-40 40 M220 215 l40 40 M260 215 l-40 40" stroke="#2b2b2b" stroke-width="9" stroke-linecap="round"/>
+    <path d="M160 305 q10 -12 20 0 t20 0 t20 0 t20 0" fill="none" stroke="#2c4f2e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="rotate(30 235 168)" fill="#f3d9b1" stroke="#b08a5a" stroke-width="3">
+      <rect x="205" y="158" width="60" height="20" rx="6"/>
+      <rect x="225" y="138" width="20" height="60" rx="6"/>
+    </g>
+    <path d="M305 205 q12 18 0 26 q-12 -8 0 -26 Z" fill="#7cc8f2" stroke="#3a8fc4" stroke-width="3"/>
+  </g>
+  <use href="#star" x="96" y="120"/>
+  <use href="#star" x="200" y="56"/>
+  <use href="#star" x="318" y="96"/>
+</svg>

@@ -10,3 +10,15 @@ export const KR_MAP = {
   damage: '피해량',
   numOfAttack: '공격 횟수 / 방어 횟수',
 };
+
+// 난이도 순서 (쉬운 것 → 어려운 것)
+export const LEVEL_ORDER = ['하', '중', '상', '특'];
+
+const levelRank = (level) => {
+  const index = LEVEL_ORDER.indexOf(level);
+  // 알 수 없는 값이나 예전 숫자 난이도는 맨 뒤로
+  return index === -1 ? LEVEL_ORDER.length : index;
+};
+
+export const sortMonstersByLevel = (monsters) =>
+  [...monsters].sort((a, b) => levelRank(a.level) - levelRank(b.level));

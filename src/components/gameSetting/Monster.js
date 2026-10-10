@@ -1,4 +1,5 @@
 import React, {
+  createRef,
   useCallback,
   useEffect,
   useMemo,
@@ -8,11 +9,42 @@ import React, {
 import {
   deleteMonster,
   getMonsterList,
+  isDefaultMonster,
   postMonster,
 } from '../../service/monster';
+import { fileToResizedDataURL } from '../../imageUtils';
+import { IMAGE_GALLERY } from '../../monsterImages';
 import { resetAllRefs, updateValueRef } from '../../utills';
-import { KR_MAP } from './assets';
+import { KR_MAP, LEVEL_ORDER, sortMonstersByLevel } from './assets';
 import MonsterAttckList from './MonsterAttckList';
+
+const IMAGE_FIELDS = ['normalImg', 'rageImg', 'hitImg', 'attackImg'];
+
+const createRefs = (fieldNames) =>
+  fieldNames.reduce((refs, fieldName) => {
+    refs[fieldName] = createRef();
+    return refs;
+  }, {});
+
+// 이미지 칸 옆에 보여주는 작은 미리보기
+const ImageThumb = ({ src, emptyText }) => {
+  const [brokenSrc, setBrokenSrc] = useState(null);
+
+  if (!src) {
+    return <div className="image-thumb empty">{emptyText}</div>;
+  }
+  if (brokenSrc === src) {
+    return <div className="image-thumb broken">불러올 수 없음</div>;
+  }
+  return (
+    <img
+      className="image-thumb"
+      src={src}
+      alt="미리보기"
+      onError={() => setBrokenSrc(src)}
+    />
+  );
+};
 
 const Monster = ({
   setSelectedMonster,
@@ -27,30 +59,35 @@ const Monster = ({
   const [attackFields, setAttackFields] = useState([]);
   const [isAttackEditModeById, setIsAttackEditModeById] = useState(null);
 
+  const [imagePreview, setImagePreview] = useState({});
+
   const savedAttackFieldsRef = useRef();
 
-  const attackRefs = {
-    attackName: useRef(null),
-    damage: useRef(null),
-    numOfAttack: useRef(null),
-  };
+  // 렌더링마다 새로 만들어지지 않도록 한 번만 생성한다.
+  const [attackRefs] = useState(() =>
+    createRefs(['attackName', 'damage', 'numOfAttack']),
+  );
+  const [InfoRefs] = useState(() => createRefs(['name', 'level', 'health']));
+  const [imgRefs] = useState(() => createRefs(IMAGE_FIELDS));
 
-  const InfoRefs = {
-    name: useRef(null),
-    level: useRef(null),
-    health: useRef(null),
-  };
+  const syncImagePreview = useCallback(() => {
+    const preview = {};
+    IMAGE_FIELDS.forEach((fieldName) => {
+      preview[fieldName] = imgRefs[fieldName].current?.value || '';
+    });
+    setImagePreview(preview);
+  }, [imgRefs]);
 
-  const imgRefs = {
-    normalImg: useRef(null),
-    rageImg: useRef(null),
-    hitImg: useRef(null),
-    attackImg: useRef(null),
+  const setImageValue = (fieldName, value) => {
+    if (imgRefs[fieldName].current) {
+      imgRefs[fieldName].current.value = value;
+    }
+    setImagePreview((prev) => ({ ...prev, [fieldName]: value }));
   };
 
   const imageListFormat = (images) => {
     const obj = {};
-    images.forEach((img) => {
+    (images || []).forEach((img) => {
       obj[`${img.image_type}Img`] = img.url;
     });
     return obj;
@@ -81,6 +118,7 @@ const Monster = ({
     resetAllRefs(attackRefs);
     resetAllRefs(InfoRefs);
     resetAllRefs(imgRefs);
+    setImagePreview({});
   };
 
   const updateInputData = useCallback(
@@ -88,8 +126,9 @@ const Monster = ({
       resetAllRefs(attackRefs);
       updateValueRef(InfoRefs, data);
       updateValueRef(imgRefs, data);
+      syncImagePreview();
     },
-    [InfoRefs, attackRefs, imgRefs],
+    [InfoRefs, attackRefs, imgRefs, syncImagePreview],
   );
 
   const dataResetAlert = () => {
@@ -134,10 +173,10 @@ const Monster = ({
   };
 
   const handleChangeMonsterSubmit = (selected) => {
-    const updateImageList = imageListFormat(monsterList[selected].images);
-    setInitialMonsterHealth(monsterList[selected].health);
+    const updateImageList = imageListFormat(selected.images);
+    setInitialMonsterHealth(selected.health);
     setSelectedMonster({
-      ...monsterList[selected],
+      ...selected,
       images: { ...updateImageList },
     });
     setMonsterState('normal');
@@ -192,22 +231,43 @@ const Monster = ({
     attackRefs.numOfAttack.current.value = +attackFields[index].num_of_attack;
   };
 
+  // Image
+  const handleImageFile = async (fieldName, event) => {
+    const input = event.target;
+    const file = input.files && input.files[0];
+    // 같은 파일을 다시 골라도 onChange 가 동작하도록 비운다.
+    input.value = '';
+    if (!file) return;
+    try {
+      const dataUrl = await fileToResizedDataURL(file);
+      setImageValue(fieldName, dataUrl);
+    } catch (err) {
+      window.alert(err?.message || '이미지를 불러오지 못했습니다.');
+    }
+  };
+
+  const handlePickGalleryImage = (galleryItem) => {
+    IMAGE_FIELDS.forEach((fieldName) => {
+      const url = galleryItem.images[fieldName];
+      if (!url) return;
+      // 기본 이미지는 항상 바꾸고, 나머지는 비어 있을 때만 채운다.
+      const currentValue = imgRefs[fieldName].current?.value;
+      if (fieldName === 'normalImg' || !currentValue) {
+        setImageValue(fieldName, url);
+      }
+    });
+  };
+
   // Submit
   const handleSubmit = async () => {
+    const getImageUrl = (fieldName) =>
+      (imgRefs[fieldName].current?.value || '').trim();
     const images = [
-      {
-        url: imgRefs.normalImg.current.value,
-        image_type: 'normal',
-      },
-      { url: imgRefs.rageImg.current.value, image_type: 'rage' },
-      {
-        url: imgRefs.attackImg.current.value,
-        image_type: 'attack',
-      },
-      { url: imgRefs.hitImg.current.value, image_type: 'hit' },
+      { url: getImageUrl('normalImg'), image_type: 'normal' },
+      { url: getImageUrl('rageImg'), image_type: 'rage' },
+      { url: getImageUrl('attackImg'), image_type: 'attack' },
+      { url: getImageUrl('hitImg'), image_type: 'hit' },
     ];
-
-    const imgRequireCheck = images.every((list) => !!list.url);
 
     const data = {
       id: patchMonster.id,
@@ -225,11 +285,13 @@ const Monster = ({
       return window.alert('난이도를 입력해주세요.');
     if (!InfoRefs.health.current.value)
       return window.alert('체력을 입력해주세요.');
-    if (!imgRequireCheck) return window.alert('이미지를 모두 입력해주세요.');
+    // 분노/피해/공격 이미지는 비워두면 전투 화면에서 기본 이미지를 사용한다.
+    if (!images[0].url) return window.alert('기본 이미지를 입력해주세요.');
     if (!savedAttackFieldsRef.current.attackFields.length)
       return window.alert('공격을 추가해주세요.');
 
-    await postMonster(data);
+    const saved = await postMonster(data);
+    if (!saved) return;
     window.alert(
       `괴물을 ${updateMode === 'create' ? '생성' : '수정'}하였습니다.`,
     );
@@ -238,14 +300,28 @@ const Monster = ({
 
   // Delete Monster
   const handleDeleteMonster = async () => {
+    if (isDefaultMonster(patchMonster.id)) {
+      return window.alert('기본 제공 괴물은 삭제할 수 없습니다.');
+    }
     const result = window.confirm(
-      '정말 삭제하시겠습니까? 삭제한 괴물는 다시 불러올 수 없습니다.',
+      '정말 삭제하시겠습니까? 삭제한 괴물은 다시 불러올 수 없습니다.',
     );
     if (!result) return false;
     await deleteMonster(patchMonster.id);
     window.alert('삭제되었습니다.');
     await handleChangeMonster('remove');
   };
+
+  // 기본 제공 괴물은 수정 목록에서 숨긴다.
+  const visibleMonsterList = useMemo(
+    () =>
+      sortMonstersByLevel(
+        updateMode === 'patch'
+          ? monsterList.filter((item) => !isDefaultMonster(item.id))
+          : monsterList,
+      ),
+    [monsterList, updateMode],
+  );
 
   useEffect(() => {
     if (updateMode === 'patch' && patchMonster.name) {
@@ -275,32 +351,40 @@ const Monster = ({
       <div>
         {(updateMode === 'change' || updateMode === 'patch') && (
           <div className="local-monster">
-            {monsterList
-              .sort((a, b) => a.level - b.level)
-              .map((item, index) => {
-                return (
-                  <button
-                    className={`tertiary ${
-                      updateMode === 'change'
-                        ? selectedMonster?.id === item.id
-                          ? 'selected'
-                          : 'unselected'
-                        : patchMonster?.id === item.id
+            {visibleMonsterList.map((item) => {
+              return (
+                <button
+                  className={`tertiary ${
+                    updateMode === 'change'
+                      ? selectedMonster?.id === item.id
                         ? 'selected'
                         : 'unselected'
-                    }`}
-                    key={item.name}
-                    onClick={() =>
-                      updateMode === 'change'
-                        ? handleChangeMonsterSubmit(index)
-                        : handlePatchMonsterByName(item)
-                    }
-                  >
-                    {item.name} (난이도: {item.level})
-                  </button>
-                );
-              })}
+                      : patchMonster?.id === item.id
+                      ? 'selected'
+                      : 'unselected'
+                  }`}
+                  key={item.id}
+                  onClick={() =>
+                    updateMode === 'change'
+                      ? handleChangeMonsterSubmit(item)
+                      : handlePatchMonsterByName(item)
+                  }
+                >
+                  {item.name} (난이도: {item.level})
+                  {isDefaultMonster(item.id) && (
+                    <span className="default-monster-badge">기본</span>
+                  )}
+                </button>
+              );
+            })}
           </div>
+        )}
+        {updateMode === 'patch' && (
+          <p className="monster-list-note">
+            {visibleMonsterList.length
+              ? '기본 제공 괴물은 수정·삭제할 수 없어 목록에 보이지 않습니다.'
+              : '수정할 수 있는 괴물이 없습니다. 괴물 생성하기에서 새 괴물을 만들어 보세요. (기본 제공 괴물은 수정·삭제할 수 없습니다.)'}
+          </p>
         )}
         {(updateMode === 'create' ||
           (updateMode === 'patch' && patchMonster.name)) && (
@@ -333,7 +417,8 @@ const Monster = ({
                           defaultValue={defaultValue[fieldName] ?? ''}
                           ref={InfoRefs[fieldName]}
                         >
-                          {['상', '중', '하', '특'].map((level) => (
+                          <option value="">선택</option>
+                          {LEVEL_ORDER.map((level) => (
                             <option key={level} value={level}>
                               {level}
                             </option>
@@ -355,19 +440,61 @@ const Monster = ({
                 <p>
                   <span className="require">*</span>이미지
                   <span style={{ fontSize: 12, fontWeight: 300 }}>
-                    ( 권장 이미지 : 높이 800px 이하 )
+                    ( 권장 이미지 : 높이 800px 이하 / 분노·피해·공격 이미지를
+                    비워두면 기본 이미지가 사용됩니다 )
                   </span>
                 </p>
                 <div>
-                  {Object.keys(imgRefs).map((fieldName) => (
-                    <div key={fieldName} className="input-field">
-                      <span>{KR_MAP[fieldName]}</span>
-                      <input
-                        defaultValue={defaultValue[fieldName] ?? ''}
-                        ref={imgRefs[fieldName]}
-                      />
+                  {IMAGE_FIELDS.map((fieldName) => (
+                    <div key={fieldName} className="input-field image-field">
+                      <span>
+                        {KR_MAP[fieldName]}
+                        {fieldName === 'normalImg' ? ' (필수)' : ' (선택)'}
+                      </span>
+                      <div className="image-input-row">
+                        <ImageThumb
+                          src={imagePreview[fieldName]}
+                          emptyText={
+                            fieldName === 'normalImg' ? '없음' : '기본 이미지'
+                          }
+                        />
+                        <input
+                          placeholder="이미지 주소(URL) 입력 또는 파일 선택"
+                          defaultValue={defaultValue[fieldName] ?? ''}
+                          ref={imgRefs[fieldName]}
+                          onChange={(e) =>
+                            setImagePreview((prev) => ({
+                              ...prev,
+                              [fieldName]: e.target.value,
+                            }))
+                          }
+                        />
+                        <label className="image-file-button">
+                          파일 선택
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleImageFile(fieldName, e)}
+                          />
+                        </label>
+                      </div>
                     </div>
                   ))}
+                </div>
+                <div className="image-gallery">
+                  <span>기본 이미지 고르기</span>
+                  <div className="image-gallery-list">
+                    {IMAGE_GALLERY.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        title={item.name}
+                        onClick={() => handlePickGalleryImage(item)}
+                      >
+                        <img src={item.images.normalImg} alt={item.name} />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </section>
               <MonsterAttckList
