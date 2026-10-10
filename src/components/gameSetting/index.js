@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Hobodang from './Hobodang';
 import Monster from './Monster';
+import HowTo from './HowTo';
 import settingImg from '../../img/setting.png';
 import './index.css';
 const GameSetting = ({
@@ -44,6 +45,9 @@ const GameSetting = ({
                 <button className="monster" onClick={() => setTab('monster')}>
                   <h2>괴물</h2>
                 </button>
+                <button className="howto" onClick={() => setTab('howto')}>
+                  <h2>사용방법</h2>
+                </button>
               </nav>
               <div className="data-editor">
                 {tab === 'player' && (
@@ -62,6 +66,7 @@ const GameSetting = ({
                     setVisible={setVisible}
                   />
                 )}
+                {tab === 'howto' && <HowTo />}
               </div>
             </div>
           </div>
