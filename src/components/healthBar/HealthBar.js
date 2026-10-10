@@ -44,6 +44,7 @@ const HealthBar = ({ health, initialHealth, setMonsterState }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexWrap: 'wrap',
       }}
     >
       <span style={{ verticalAlign: 'top', margin: '10px', fontSize: 30 }}>
@@ -53,7 +54,8 @@ const HealthBar = ({ health, initialHealth, setMonsterState }) => {
         style={{
           display: 'inline-block',
           border: '1px solid black',
-          width: '80%',
+          flex: 1,
+          minWidth: 120,
           borderRadius: 8,
         }}
       >

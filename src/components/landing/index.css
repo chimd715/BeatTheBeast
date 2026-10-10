@@ -59,6 +59,8 @@
   height: 140px;
   pointer-events: none;
   user-select: none;
+  /* 로고 PNG의 흰 배경이 한지 배경 위에서 네모로 보이지 않도록 */
+  mix-blend-mode: multiply;
 }
 
 /* 처음으로 버튼 (전투/능력치/게시판 화면 공용) */

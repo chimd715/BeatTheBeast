@@ -101,7 +101,7 @@ const Monster = ({
             width: '100%',
             height: '100%',
             top: 0,
-            fontSize: 100,
+            fontSize: 'min(100px, 12vw)',
             color: 'red',
             display: 'flex',
             alignItems: 'center',
