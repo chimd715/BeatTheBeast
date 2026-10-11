@@ -8,6 +8,7 @@ import Landing from './components/landing';
 import HomeButton from './components/landing/HomeButton';
 import StudentStats from './components/studentStats';
 import Board from './components/board';
+import { getRestState } from './monsterState';
 import './App.css';
 
 // 화면 전환: 'landing' | 'battle' | 'stats' | 'board' (URL hash로 뒤로가기 지원)
@@ -54,8 +55,7 @@ const App = () => {
   // 괴물이 공격/피격 이미지에 멈추지 않도록 체력에 맞는 상태로 되돌린다.
   useEffect(() => {
     if (view === 'battle') return;
-    const remainHealth = (selectedMonster.health / initialHealth) * 100;
-    setMonsterState(remainHealth < 30 ? 'rage' : 'normal');
+    setMonsterState(getRestState(selectedMonster.health, initialHealth));
   }, [view, selectedMonster.health, initialHealth]);
 
   if (view === 'stats') {
@@ -107,6 +107,7 @@ const App = () => {
             <Wheel
               items={group}
               setMonsterState={setMonsterState}
+              restState={getRestState(selectedMonster.health, initialHealth)}
               selectedMonsterAttack={selectedMonsterAttack}
               setSelectedMonsterAttack={setSelectedMonsterAttack}
             />

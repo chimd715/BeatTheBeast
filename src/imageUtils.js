@@ -1,4 +1,6 @@
 export const MAX_IMAGE_HEIGHT = 800;
+// 가로로 아주 긴 이미지(파노라마 등)도 저장 공간을 많이 차지하지 않도록 너비도 제한한다.
+export const MAX_IMAGE_WIDTH = 1600;
 const IMAGE_QUALITY = 0.85;
 // 움직이는 GIF 는 캔버스를 거치면 멈추므로, 이 크기 이하면 원본 그대로 쓴다.
 const MAX_ORIGINAL_GIF_SIZE = 1024 * 1024;
@@ -7,14 +9,20 @@ const MAX_ORIGINAL_GIF_SIZE = 1024 * 1024;
 const TRANSPARENT_TYPES = ['image/png', 'image/gif', 'image/webp', 'image/avif'];
 
 /**
- * 높이가 maxHeight 를 넘으면 비율을 유지한 채 줄인 크기를 돌려준다.
+ * 높이가 maxHeight, 너비가 maxWidth 를 넘으면 비율을 유지한 채 줄인 크기를 돌려준다.
  */
-export function calcResizedSize(width, height, maxHeight = MAX_IMAGE_HEIGHT) {
-  if (!height || height <= maxHeight) return { width, height };
-  const ratio = maxHeight / height;
+export function calcResizedSize(
+  width,
+  height,
+  maxHeight = MAX_IMAGE_HEIGHT,
+  maxWidth = MAX_IMAGE_WIDTH,
+) {
+  if (!width || !height) return { width, height };
+  const ratio = Math.min(maxHeight / height, maxWidth / width, 1);
+  if (ratio === 1) return { width, height };
   return {
     width: Math.max(1, Math.round(width * ratio)),
-    height: maxHeight,
+    height: Math.max(1, Math.round(height * ratio)),
   };
 }
 
@@ -45,7 +53,7 @@ function loadImage(src) {
 
 /**
  * 이미지 파일을 localStorage 에 저장하기 좋은 data URL 로 바꾼다.
- * 높이를 최대 800px 로 줄이고 JPEG/WebP 로 압축한다.
+ * 높이 최대 800px, 너비 최대 1600px 로 줄이고 JPEG/WebP 로 압축한다.
  * @param {File} file
  * @returns {Promise<string>}
  */
@@ -64,6 +72,7 @@ export async function fileToResizedDataURL(file) {
   if (
     file.type === 'image/gif' &&
     img.naturalHeight <= MAX_IMAGE_HEIGHT &&
+    img.naturalWidth <= MAX_IMAGE_WIDTH &&
     file.size <= MAX_ORIGINAL_GIF_SIZE
   ) {
     return original;
@@ -84,7 +93,11 @@ export async function fileToResizedDataURL(file) {
   const resized = canvas.toDataURL(outputType, IMAGE_QUALITY);
 
   // 줄일 필요가 없었고 원본이 더 작으면 원본을 쓴다.
-  if (height === img.naturalHeight && original.length <= resized.length) {
+  if (
+    width === img.naturalWidth &&
+    height === img.naturalHeight &&
+    original.length <= resized.length
+  ) {
     return original;
   }
   return resized;

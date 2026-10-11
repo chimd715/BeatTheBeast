@@ -48,6 +48,15 @@ export const getStudents = () => {
   }
 };
 
+const isQuotaError = (error) =>
+  !!error &&
+  (error.name === 'QuotaExceededError' ||
+    error.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+    error.code === 22 ||
+    error.code === 1014);
+
+// 저장에 성공하면 저장된 목록을, 실패하면 안내 후 null 을 돌려준다.
+// 실패했을 때는 화면도 바꾸지 않는다. (새로고침하면 사라질 값을 저장된 것처럼 보이지 않도록)
 export const saveStudents = (students) => {
   const normalized = normalizeStudents(students);
   try {
@@ -55,8 +64,13 @@ export const saveStudents = (students) => {
       STUDENTS_STORAGE_KEY,
       JSON.stringify(normalized)
     );
-  } catch (e) {
-    // localStorage를 쓸 수 없는 환경에서도 같은 탭 안에서는 동기화되도록 이벤트는 보낸다.
+  } catch (error) {
+    window.alert(
+      isQuotaError(error)
+        ? '저장 공간이 부족해 학생 정보를 저장하지 못했습니다. 괴물 이미지를 작은 것으로 바꾸거나 쓰지 않는 괴물을 삭제해주세요.'
+        : '학생 정보를 저장하지 못했습니다. 브라우저의 사이트 데이터(저장소) 설정을 확인해주세요.'
+    );
+    return null;
   }
   window.dispatchEvent(
     new CustomEvent(CHANGE_EVENT, { detail: { students: normalized } })

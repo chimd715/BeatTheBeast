@@ -19,6 +19,7 @@ const SPIN_TIMER = 2000;
 const Wheel = ({
   items,
   setMonsterState,
+  restState = 'normal',
   selectedMonsterAttack,
   setSelectedMonsterAttack,
 }) => {
@@ -47,8 +48,8 @@ const Wheel = ({
     setSelectedListModalVisible(false);
     setSelectedList([]);
 
-    // Reset monster state when closing modal
-    setMonsterState('normal');
+    // 결과창을 닫으면 체력에 맞는 상태(분노/기본)로 되돌린다.
+    setMonsterState(restState);
   };
 
   useEffect(() => {

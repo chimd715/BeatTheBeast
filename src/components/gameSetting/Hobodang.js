@@ -11,11 +11,12 @@ const Hobodang = ({ setPlayer, player, setVisible }) => {
   );
 
   const handleSubmit = () => {
-    const inputValue = +updateCount.current.value;
-    if (!inputValue) return setMessage('0이상의 숫자를 입력해주세요.');
+    const inputValue = Number(updateCount.current.value.trim());
+    if (!Number.isInteger(inputValue) || inputValue < 1)
+      return setMessage('1 이상의 정수를 입력해주세요.');
     if (inputValue > 99) return setMessage('99이하의 숫자를 입력해주세요.');
 
-    setPlayer(updateCount.current.value);
+    setPlayer(inputValue);
     setIsEditMode(false);
     setVisible(false);
   };

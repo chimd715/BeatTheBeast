@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './index.css';
 
 import win from '../../img/win.png';
 import { SETTING_KEYS, useSetting } from '../../settings';
+import { RAGE_HEALTH_PERCENT } from '../../monsterState';
 
 const HealthBar = ({ health, initialHealth, setMonsterState }) => {
   const [winningModalVisible, setWinningModalVisible] = useState(false);
@@ -18,20 +19,25 @@ const HealthBar = ({ health, initialHealth, setMonsterState }) => {
       default:
       case remainHealth >= 70:
         return 'green';
-      case remainHealth >= 30 && remainHealth < 70:
+      case remainHealth >= RAGE_HEALTH_PERCENT && remainHealth < 70:
         return 'yellow';
-      case remainHealth < 30:
+      case remainHealth < RAGE_HEALTH_PERCENT:
         // setMonsterState('rage');
         return 'red';
     }
   }, [remainHealth]);
 
+  // 승리 창은 이 화면에서 체력이 0이 되는 순간에만 띄운다.
+  // (처치한 괴물로 전투 화면에 다시 들어올 때마다 뜨지 않도록)
+  const prevHealthRef = useRef(displayHealth);
   useEffect(() => {
-    if (displayHealth === 0) {
-      setTimeout(() => {
-        setWinningModalVisible(true);
-      }, 1000);
-    }
+    const wasAlive = prevHealthRef.current > 0;
+    prevHealthRef.current = displayHealth;
+    if (!wasAlive || displayHealth !== 0) return;
+    const timer = setTimeout(() => {
+      setWinningModalVisible(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [displayHealth]);
 
   return (

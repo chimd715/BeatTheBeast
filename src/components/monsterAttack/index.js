@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getGroupTotals, useStudents } from '../../service/students';
+import { getRestState } from '../../monsterState';
 import './index.css';
 
 const DAMAGE_POPUP_DURATION = 1500;
@@ -56,11 +57,8 @@ const MonsterAttack = ({
     showDamage(damage);
 
     // Reset monster state after 1 second
-    const current_health = health - damage;
-    const remainHealth = (current_health / initialHealth) * 100;
-    addTimer(() => {
-      remainHealth < 30 ? setMonsterState('rage') : setMonsterState('normal');
-    }, 1000);
+    const restState = getRestState(health - damage, initialHealth);
+    addTimer(() => setMonsterState(restState), 1000);
   };
 
   const handleSubmit = (event) => {

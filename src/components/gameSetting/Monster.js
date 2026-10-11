@@ -19,6 +19,10 @@ import { KR_MAP, LEVEL_ORDER, sortMonstersByLevel } from './assets';
 import MonsterAttckList from './MonsterAttckList';
 
 const IMAGE_FIELDS = ['normalImg', 'rageImg', 'hitImg', 'attackImg'];
+// 기본 제공 이미지 주소 모음 (사용자가 직접 넣은 이미지와 구분하기 위해)
+const GALLERY_IMAGE_URLS = new Set(
+  IMAGE_GALLERY.flatMap((item) => Object.values(item.images)),
+);
 
 const createRefs = (fieldNames) =>
   fieldNames.reduce((refs, fieldName) => {
@@ -60,6 +64,8 @@ const Monster = ({
   const [isAttackEditModeById, setIsAttackEditModeById] = useState(null);
 
   const [imagePreview, setImagePreview] = useState({});
+  // 파일을 이미지로 변환 중인 개수. 변환이 끝나기 전에 저장하면 새 이미지가 빠지므로 막는다.
+  const [convertingCount, setConvertingCount] = useState(0);
 
   const savedAttackFieldsRef = useRef();
   // 수정 대상 괴물이나 모드가 바뀔 때마다 올라간다. (이미지 변환 중 대상이 바뀌었는지 확인용)
@@ -245,6 +251,7 @@ const Monster = ({
     input.value = '';
     if (!file) return;
     const formVersion = formVersionRef.current;
+    setConvertingCount((count) => count + 1);
     try {
       const dataUrl = await fileToResizedDataURL(file);
       // 변환하는 동안 다른 괴물로 바뀌었으면 그 괴물의 입력칸에 넣지 않는다.
@@ -252,23 +259,48 @@ const Monster = ({
       setImageValue(fieldName, dataUrl);
     } catch (err) {
       window.alert(err?.message || '이미지를 불러오지 못했습니다.');
+    } finally {
+      setConvertingCount((count) => count - 1);
     }
   };
 
   const handlePickGalleryImage = (galleryItem) => {
     IMAGE_FIELDS.forEach((fieldName) => {
       const url = galleryItem.images[fieldName];
-      if (!url) return;
-      // 기본 이미지는 항상 바꾸고, 나머지는 비어 있을 때만 채운다.
       const currentValue = imgRefs[fieldName].current?.value;
-      if (fieldName === 'normalImg' || !currentValue) {
-        setImageValue(fieldName, url);
+      if (url) {
+        // 기본 이미지는 항상 바꾸고, 나머지는 비어 있거나 다른 기본 제공 이미지일 때만 바꾼다.
+        if (
+          fieldName === 'normalImg' ||
+          !currentValue ||
+          GALLERY_IMAGE_URLS.has(currentValue)
+        ) {
+          setImageValue(fieldName, url);
+        }
+      } else if (GALLERY_IMAGE_URLS.has(currentValue)) {
+        // 새로 고른 세트에 없는 칸에 이전 세트의 이미지가 남아 있으면 비운다. (비우면 기본 이미지 사용)
+        setImageValue(fieldName, '');
       }
     });
   };
 
+  // 전투 중인 괴물을 고치면 전투 화면에도 바로 반영한다. (현재 체력은 새 최대 체력을 넘지 않게)
+  const applyToBattle = (monster) => {
+    setInitialMonsterHealth(monster.health);
+    setSelectedMonster((prev) => ({
+      ...monster,
+      images: imageListFormat(monster.images),
+      health: Math.min(prev.health, monster.health),
+    }));
+  };
+
   // Submit
   const handleSubmit = async () => {
+    if (convertingCount > 0) {
+      return window.alert(
+        '이미지를 변환하는 중입니다. 잠시 후 다시 저장해주세요.',
+      );
+    }
     const getImageUrl = (fieldName) =>
       (imgRefs[fieldName].current?.value || '').trim();
     const images = [
@@ -301,6 +333,14 @@ const Monster = ({
 
     const saved = await postMonster(data);
     if (!saved) return;
+    if (
+      updateMode === 'patch' &&
+      selectedMonster?.id !== undefined &&
+      selectedMonster.id === patchMonster.id
+    ) {
+      const savedMonster = saved.find((monster) => monster.id === data.id);
+      if (savedMonster) applyToBattle(savedMonster);
+    }
     window.alert(
       `괴물을 ${updateMode === 'create' ? '생성' : '수정'}하였습니다.`,
     );
@@ -319,6 +359,15 @@ const Monster = ({
     const remainMonsters = await deleteMonster(patchMonster.id);
     if (!remainMonsters) return;
     window.alert('삭제되었습니다.');
+    // 전투 중인 괴물을 지웠으면 전투 화면을 '괴물을 선택해주세요'로 되돌린다.
+    if (
+      selectedMonster?.id !== undefined &&
+      selectedMonster.id === patchMonster.id
+    ) {
+      setSelectedMonster({});
+      setMonsterState('normal');
+      return;
+    }
     await handleChangeMonster('remove');
   };
 
@@ -512,8 +561,12 @@ const Monster = ({
                 patchMonster={patchMonster}
               />
             </div>
-            <button className="submit" onClick={handleSubmit}>
-              데이터 저장
+            <button
+              className="submit"
+              onClick={handleSubmit}
+              disabled={convertingCount > 0}
+            >
+              {convertingCount > 0 ? '이미지 변환 중…' : '데이터 저장'}
             </button>
           </div>
         )}

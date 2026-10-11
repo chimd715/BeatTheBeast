@@ -25,6 +25,8 @@ const Board = ({ onHome }) => {
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);
   const selectedPost = posts.find((post) => post.id === selectedId) || null;
   const editingPost = posts.find((post) => post.id === editingId) || null;
+  // 수정하던 글이 다른 탭에서 지워졌으면, 쓰던 내용은 그대로 두고 새 글로 저장하게 한다.
+  const editingPostDeleted = mode === 'form' && editingId && !editingPost;
 
   // 다른 탭에서 게시글을 바꾸면 다시 읽어온다.
   useEffect(() => {
@@ -128,11 +130,16 @@ const Board = ({ onHome }) => {
   if (mode === 'form') {
     content = (
       <BoardForm
-        key={editingPost ? editingPost.id : 'new'}
+        key={editingId || 'new'}
         initialPost={editingPost}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
-        saveError={saveError}
+        saveError={
+          saveError ||
+          (editingPostDeleted
+            ? '수정하던 글이 다른 곳에서 삭제되었습니다. 저장하면 새 글로 저장됩니다.'
+            : null)
+        }
       />
     );
   } else if (mode === 'detail' && selectedPost) {

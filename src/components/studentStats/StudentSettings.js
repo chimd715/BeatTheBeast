@@ -100,7 +100,7 @@ const StudentSettings = ({ students }) => {
       setNotice('이름을 입력해주세요.');
       return;
     }
-    addStudent(trimmed, newGroup);
+    if (!addStudent(trimmed, newGroup)) return;
     setNewName('');
     setNotice(`'${trimmed}' 학생을 ${newGroup}모둠에 추가했습니다.`);
   };
@@ -111,7 +111,7 @@ const StudentSettings = ({ students }) => {
       setNotice('한 줄에 한 명씩 이름을 입력해주세요.');
       return;
     }
-    addStudents(bulkList, bulkGroup);
+    if (!addStudents(bulkList, bulkGroup)) return;
     setBulkNames('');
     setNotice(`${bulkList.length}명을 ${bulkGroup}모둠에 추가했습니다.`);
   };
@@ -122,7 +122,7 @@ const StudentSettings = ({ students }) => {
         '모든 학생의 지·덕·체 능력치를 0으로 초기화할까요? 학생 목록은 그대로 남습니다.'
       )
     ) {
-      resetAllStats();
+      if (!resetAllStats()) return;
       setNotice('모든 능력치를 0으로 초기화했습니다.');
     }
   };
