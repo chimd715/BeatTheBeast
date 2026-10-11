@@ -27,3 +27,9 @@ yarn-error.log*
 
 # cache
 **/__pycache__/
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+.vercel

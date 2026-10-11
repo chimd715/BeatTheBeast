@@ -1,10 +1,20 @@
-import dokkaebiNormal from './img/default-monster.svg';
-import dokkaebiRage from './img/default-monster-rage.svg';
-import dokkaebiHit from './img/default-monster-hit.svg';
-import dokkaebiAttack from './img/default-monster-attack.svg';
-import puppy1 from './img/puppy/1.jpeg';
-import puppy2 from './img/puppy/2.jpeg';
-import puppy3 from './img/puppy/3.jpeg';
+import dokkaebiNormalAsset from './img/default-monster.svg';
+import dokkaebiRageAsset from './img/default-monster-rage.svg';
+import dokkaebiHitAsset from './img/default-monster-hit.svg';
+import dokkaebiAttackAsset from './img/default-monster-attack.svg';
+import puppy1Asset from './img/puppy/1.jpeg';
+import puppy2Asset from './img/puppy/2.jpeg';
+import puppy3Asset from './img/puppy/3.jpeg';
+
+import { assetUrl } from './assetUrl';
+
+const dokkaebiNormal = assetUrl(dokkaebiNormalAsset);
+const dokkaebiRage = assetUrl(dokkaebiRageAsset);
+const dokkaebiHit = assetUrl(dokkaebiHitAsset);
+const dokkaebiAttack = assetUrl(dokkaebiAttackAsset);
+const puppy1 = assetUrl(puppy1Asset);
+const puppy2 = assetUrl(puppy2Asset);
+const puppy3 = assetUrl(puppy3Asset);
 
 // 괴물 이미지가 비어 있거나 불러오지 못할 때 대신 보여주는 이미지
 export const DEFAULT_MONSTER_IMG = dokkaebiNormal;

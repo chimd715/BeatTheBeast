@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Hobodang from './Hobodang';
 import Monster from './Monster';
 import HowTo from './HowTo';
-import settingImg from '../../img/setting.png';
+import settingImgAsset from '../../img/setting.png';
+import { assetUrl } from '../../assetUrl';
 import './index.css';
 const GameSetting = ({
   setPlayer,
@@ -24,7 +25,7 @@ const GameSetting = ({
             className="setting-icon-container"
             style={{ width: 20, height: 20 }}
           >
-            <img src={settingImg} alt="설정" />
+            <img src={assetUrl(settingImgAsset)} alt="설정" />
           </div>
         )}
       </div>

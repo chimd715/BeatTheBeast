@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './index.css';
 
-import win from '../../img/win.png';
+import winAsset from '../../img/win.png';
+import { assetUrl } from '../../assetUrl';
 import { SETTING_KEYS, useSetting } from '../../settings';
 import { RAGE_HEALTH_PERCENT } from '../../monsterState';
 
@@ -89,7 +90,7 @@ const HealthBar = ({ health, initialHealth, setMonsterState }) => {
             >
               x
             </div>
-            <img src={win} alt="승리" />
+            <img src={assetUrl(winAsset)} alt="승리" />
           </div>
         </div>
       )}

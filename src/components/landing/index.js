@@ -1,7 +1,10 @@
 import React from 'react';
 import './index.css';
 
-import logo from '../../img/굴리는_선생님_로고.png';
+import logoAsset from '../../img/굴리는_선생님_로고.png';
+import { assetUrl } from '../../assetUrl';
+
+const logo = assetUrl(logoAsset);
 
 const MENUS = [
   { view: 'battle', label: '전투' },

@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# 호보당 (Beat the Beast) — Vercel 배포 브랜치
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+모둠이 힘을 합쳐 괴물을 무찌르는 교실 게임입니다. 이 `vercel-deploy` 브랜치는 Vercel 배포용으로 Next.js(App Router) 위에서 실행되도록 옮긴 버전입니다. 게임 코드(`src/`)는 `main` 브랜치(CRA)와 같고, 진입점과 빌드 설정만 다릅니다.
 
-## Available Scripts
+## 실행
 
-In the project directory, you can run:
+```bash
+npm install
+npm run dev     # 개발 서버 (http://localhost:3000)
+npm run build   # 배포용 빌드
+npm run start   # 빌드 결과 실행
+```
 
-### `npm start`
+Node.js 20.9 이상이 필요합니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Vercel 배포
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Vercel에서 이 저장소를 가져오고(Import), Production Branch를 `vercel-deploy`로 지정합니다.
+2. Framework Preset은 Next.js로 자동 인식됩니다. Build Command, Output Directory, 환경 변수는 따로 설정하지 않아도 됩니다.
 
-### `npm test`
+## 구조
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- `app/layout.js`, `app/page.js`: Next.js 진입점. 게임은 브라우저 저장소(localStorage)를 처음부터 읽기 때문에 서버 렌더링 없이 브라우저에서만 그립니다.
+- `src/`: 게임 코드. 화면 전환은 주소의 `#battle`, `#stats`, `#board`로 합니다.
+- `src/design-drafts/`: 메인 페이지 디자인 시안(앱에서 사용하지 않음). Next.js가 `pages` 폴더를 라우터로 인식하지 않도록 이름을 바꿨습니다.
 
-### `npm run build`
+## 데이터
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+괴물, 학생 능력치, 게시글은 모두 접속한 브라우저에만 저장됩니다. 주소(도메인)가 다르면 데이터가 따로 저장되므로, GitHub Pages 주소에서 쓰던 데이터는 Vercel 주소에서 보이지 않습니다.
